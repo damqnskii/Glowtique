@@ -1,27 +1,26 @@
-package com.glowtique.glowtique.cart.model;
+package com.glowtique.glowtique.wishlistitem.model;
 
 import com.glowtique.glowtique.product.model.Product;
+import com.glowtique.glowtique.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
 
 @Entity
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartItem {
+@Builder
+public class WishlistItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne
-    private Cart cart;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
-
-    private int quantity;
 }

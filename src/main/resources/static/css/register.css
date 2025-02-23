@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+* {
+    font-family: "Mulish", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+body {
+    margin: 0;
+    background-color: white;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: inherit;
+    background-color: lightgray;
+    padding: 10px;
+}
+
+img {
+    width: 175px;
+    height: auto;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 45px;
+}
+
+.registration-container {
+    background-color: rgb(99, 99, 99);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.label:before {
+    content:"*" ;
+    color:red
+}
+
+.registration-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: white;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 400;
+    color: white;
+}
+
+.form-group input, .form-group select {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.register-button {
+    width: 100%;
+    padding: 10px;
+    background-color: gray;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+}
+
+.register-button:hover {
+    background-color: lightgray;
+}
+.already-registered {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.already-registered a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.already-registered a:hover {
+    color: gray;
+}
+
+.footer {
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    border-top: 1px solid inherit;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    background-color: lightgray;
+}
