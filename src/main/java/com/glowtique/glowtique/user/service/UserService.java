@@ -1,0 +1,87 @@
+package com.glowtique.glowtique.user.service;
+
+import com.glowtique.glowtique.user.model.UserRole;
+import com.glowtique.glowtique.user.repository.UserRepository;
+import com.glowtique.glowtique.web.dto.LoginRequest;
+import com.glowtique.glowtique.web.dto.RegisterRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.glowtique.glowtique.user.model.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+@Slf4j
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public User getUserById(UUID id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+
+    public User login (LoginRequest loginRequest) {
+        Optional<User> optionalUser = userRepository.findUserByEmail(loginRequest.getEmail());
+
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        User user = optionalUser.get();
+
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Wrong password");
+        }
+
+        return user;
+
+    }
+
+    public User register (RegisterRequest registerRequest) {
+        Optional<User> optionalUser = userRepository.findUserByEmail(registerRequest.getEmail());
+
+        if (optionalUser.isPresent()) {
+            throw new RuntimeException("User already exists");
+        }
+        if (!registerRequest.password.equals(registerRequest.confirmPassword)) {
+            throw new RuntimeException("Password does not match");
+        }
+
+        User user = User.builder()
+                .firstName(registerRequest.getFirstName())
+                .lastName(registerRequest.getLastName())
+                .email(registerRequest.getEmail())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .birthday(registerRequest.getBirthday())
+                .gender(registerRequest.getGender())
+                .phoneNumber(null)
+                .role(UserRole.USER)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .town(null)
+                .street(null)
+                .country(null)
+                .orders(null)
+                .wishlistItems(null)
+                .cart(null)
+                .build();
+        return userRepository.save(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+}

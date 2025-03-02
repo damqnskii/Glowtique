@@ -16,14 +16,16 @@
     <main>
         <div class="login-container">
             <h2>Login</h2>
-            <form action="#" method="POST">
+            <form th:action="@{/login}" th:method="POST" th:object="${loginRequest}">
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <input th:field="*{email}" type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <p class="alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <input th:field="*{password}" type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <p class="alert-warning" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
                 </div>
                 <button type="submit" class="login-button">Login</button>
             </form>
@@ -33,8 +35,5 @@
             </div>
         </div>
     </main>
-    <div class="footer">
-        <p>© Copyright Glowtique All Rights Reserved 2025</p>
-    </div>
 </body>
 </html>

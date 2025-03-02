@@ -5,6 +5,7 @@ import com.glowtique.glowtique.order.model.Order;
 import com.glowtique.glowtique.wishlistitem.model.WishlistItem;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Builder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,9 +14,9 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Builder(toBuilder = true)
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -55,6 +56,8 @@ public class User {
     private String town;
 
     private String street;
+
+    private boolean isActive;
 
     @Enumerated(EnumType.STRING)
     private Country country;
