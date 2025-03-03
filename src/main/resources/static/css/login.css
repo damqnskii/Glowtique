@@ -9,7 +9,7 @@ body {
     align-items: center;
     justify-content: center;
     margin-bottom: inherit;
-    background-color: lightgray;
+    background-color: #8B5E3C;
     padding: 10px;
 }
 
@@ -27,7 +27,7 @@ main {
 }
 
 .login-container {
-    background-color: rgb(99, 99, 99);
+    background-color:#8B5E3C;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -70,7 +70,7 @@ main {
 .login-button {
     width: 100%;
     padding: 10px;
-    background-color: gray;
+    background-color: darkgray;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -90,13 +90,13 @@ main {
 }
 
 .forgot-password a {
-    color: white;
+    color: darkgray;
     text-decoration: none;
     transition: color 0.3s;
 }
 
 .forgot-password a:hover {
-    color: gray;
+    color: lightgray;
 }
 
 .footer {
@@ -111,7 +111,7 @@ main {
 }
 
 .alert-warning {
-    color: #ff9800;
+    color: #b60000;
     background-color: #fff3cd;
     border-color: #ffeeba;
     padding: 10px;

@@ -21,7 +21,7 @@ public class Brand {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(length = 750)
     private String description;
 
 }

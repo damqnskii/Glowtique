@@ -1,5 +1,7 @@
 package com.glowtique.glowtique.user.service;
 
+import com.glowtique.glowtique.cart.model.Cart;
+import com.glowtique.glowtique.exception.AlreadyRegEmailException;
 import com.glowtique.glowtique.user.model.UserRole;
 import com.glowtique.glowtique.user.repository.UserRepository;
 import com.glowtique.glowtique.web.dto.EditProfileRequest;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -75,9 +78,9 @@ public class UserService {
                 .town(null)
                 .street(null)
                 .country(null)
-                .orders(null)
-                .wishlistItems(null)
-                .cart(null)
+                .orders(new HashSet<>())
+                .wishlistItems(new HashSet<>())
+                .cart(new Cart())
                 .build();
         return userRepository.save(user);
     }
@@ -91,6 +94,9 @@ public class UserService {
         User user = getUserById(userId);
         Optional<User> isFigured = userRepository.findUserByEmail(editProfileRequest.getEmail());
 
+        if (isFigured.isPresent() && !isFigured.get().getId().equals(userId)) {
+            throw new AlreadyRegEmailException("The email address already exists");
+        }
 
         user.setEmail(editProfileRequest.getEmail());
         user.setFirstName(editProfileRequest.getFirstName());
