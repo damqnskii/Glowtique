@@ -12,14 +12,15 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
-@RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
     private final UserService userService;
@@ -30,7 +31,7 @@ public class ProductController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/products")
     public ModelAndView getProductPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata, Model model,
                                        @RequestParam(value = "category", required = false) CategoryType category) {
         User user = userService.getUserById(authenticationMetadata.getUserId());
@@ -40,6 +41,19 @@ public class ProductController {
         modelAndView.setViewName("products");
         modelAndView.addObject("products", products);
         modelAndView.addObject("user", user);
+        return modelAndView;
+    }
+
+    @GetMapping("/product/{id}")
+    public ModelAndView getProductDetails(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata,
+                                          @PathVariable UUID id) {
+        User user = userService.getUserById(authenticationMetadata.getUserId());
+        Product product = productService.getProductById(id);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("product-details");
+        modelAndView.addObject("product", product);
+        modelAndView.addObject("user", user);
+
         return modelAndView;
     }
 }

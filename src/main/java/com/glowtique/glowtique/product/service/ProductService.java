@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -24,5 +25,9 @@ public class ProductService {
     }
     public List<Product> findByCategory(CategoryType category) {
         return productRepository.findByCategory(category);
+    }
+
+    public Product getProductById(UUID id) {
+        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
     }
 }

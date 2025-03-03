@@ -45,6 +45,7 @@ header {
     background-color: #8B5E3C;
     position: relative;
     z-index: 1000;
+    box-shadow: 0 0 10px 0;
 }
 
 .menu-sections {
