@@ -2,8 +2,10 @@ package com.glowtique.glowtique.user.service;
 
 import com.glowtique.glowtique.user.model.UserRole;
 import com.glowtique.glowtique.user.repository.UserRepository;
+import com.glowtique.glowtique.web.dto.EditProfileRequest;
 import com.glowtique.glowtique.web.dto.LoginRequest;
 import com.glowtique.glowtique.web.dto.RegisterRequest;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.glowtique.glowtique.user.model.User;
@@ -83,5 +85,27 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    @Transactional
+    public User updateUser (UUID userId, EditProfileRequest editProfileRequest) {
+        User user = getUserById(userId);
+        Optional<User> isFigured = userRepository.findUserByEmail(editProfileRequest.getEmail());
+
+
+        user.setEmail(editProfileRequest.getEmail());
+        user.setFirstName(editProfileRequest.getFirstName());
+        user.setLastName(editProfileRequest.getLastName());
+        user.setPhoneNumber(editProfileRequest.getPhoneNumber());
+        user.setCountry(editProfileRequest.getCountry());
+        user.setTown(editProfileRequest.getTown());
+        user.setStreet(editProfileRequest.getStreet());
+        user.setFactureAddress(editProfileRequest.getFactureAddress());
+        user.setShippingAddress(editProfileRequest.getShippingAddress());
+        user.setUpdatedAt(LocalDateTime.now());
+
+        return userRepository.save(user);
+    }
+
+
 
 }

@@ -33,7 +33,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -58,6 +58,12 @@ public class User {
     private String street;
 
     private boolean isActive;
+
+    private int loyaltyPoints;
+
+    private String shippingAddress;
+
+    private String factureAddress;
 
     @Enumerated(EnumType.STRING)
     private Country country;
