@@ -82,4 +82,13 @@ public class UserController {
         return new ModelAndView("redirect:/profile");
 
     }
+
+    @GetMapping("/wishlist")
+    public ModelAndView getWishlist(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        User user = userService.getUserById(authenticationMetadata.getUserId());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("wishlist");
+        modelAndView.addObject("user", user);
+        return modelAndView;
+    }
 }

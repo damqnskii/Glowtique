@@ -55,7 +55,7 @@
             <div class="product-details">
                 <p th:text="${product.price} + ' лв.'" class="price"></p>
             </div>
-            <button class="add-to-cart" th:data-id="${product.id}">Добави в кошницата</button>
+            <button class="add-to-cart" th:data-id="${product.id}" onclick="addToWishlist(this)">Добави в кошницата</button>
         </div>
     </main>
 </div>

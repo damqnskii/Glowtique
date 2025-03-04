@@ -1,8 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
-    background-color: #f8f8f8;
+    padding-top: 1em;
 }
 
 /* Layout */
@@ -10,17 +9,34 @@ body {
     display: flex;
     max-width: 1200px;
     margin: 20px auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    height: 98%;
 }
 
 .sidebar {
     width: 250px;
-    background: white;
     padding: 20px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
 }
 
-.sidebar h2, .sidebar h3, .sidebar h4 {
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
     margin-bottom: 10px;
+}
+.sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+h2 {
+    text-align: center;
+    margin-left: -2rem;
 }
 
 .sidebar ul {
@@ -29,59 +45,46 @@ body {
 }
 
 .sidebar ul li {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
-.search-section input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-}
-.filter-section {
-    max-height: 200px; /* Set a fixed height for scrolling */
-    overflow-y: auto;  /* Enables vertical scrolling */
-    padding-right: 10px; /* Prevents content from being cut off */
-    padding: 10px;
-}
-
-/* Optional: To ensure the scrollbar looks clean */
-.filter-section::-webkit-scrollbar {
-    width: 6px;
-}
-
-.filter-section::-webkit-scrollbar-thumb {
-    background-color: #aaa;
-    border-radius: 3px;
-}
-
-.filter-section::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.apply-filters {
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
     display: block;
-    width: 100%;
-    background: #8B5E3C;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    margin-top: 20px;
-    border-radius: 5px;
-    font-size: 16px;
+    padding: 5px;
 }
 
-.apply-filters:hover {
-    background: #6d472c;
+.sidebar ul li a.active,
+.sidebar ul li a:hover {
+    color: #02665c;
+    font-weight: bold;
+    transition-duration: 0.2s;
 }
+.profile-content {
+    flex: 1;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-content h1 {
+    text-align: center;
+    color: black;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+
 
 /* Product Grid */
 .product-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping to new lines */
     gap: 20px;
-    padding: 20px;
-    width: 100%;
+    justify-content: space-around; /* Ensures proper spacing */
+    padding: 20px 20px 20px 0;
+    width: 100%; /* Ensures full width */
 }
 .wishlist-btn {
     position: absolute;
@@ -93,6 +96,9 @@ body {
     color: #ccc;
     cursor: pointer;
     transition: color 0.3s ease;
+}
+.banner p {
+    text-align: center;
 }
 
 .wishlist-btn:hover {
@@ -108,8 +114,9 @@ body {
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Ensures spacing */
+    justify-content: space-around; /* Ensures spacing */
     height: 95%; /* Ensures equal height */
+    width: 200px;
 }
 
 .product a {
@@ -164,6 +171,10 @@ body {
     margin: -5px -10px 0 0;
 
 }
+
+
+
+
 /* Add to Cart Button */
 .add-to-cart {
     background: #8B5E3C;
