@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
-    padding: 0;
+    padding-bottom: 20px;
 }
 
 .container {
@@ -313,6 +313,26 @@ h2 {
 .third-content {
     text-align: center;
     margin-top: 40px;
+}
+
+.in-stock {
+    background: green;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    margin: -5px 0 0 0;
+}
+.out-of-stock {
+    background: rgb(143, 0, 0);
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    margin: -5px 0 0 0;
+}
+.stock-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 

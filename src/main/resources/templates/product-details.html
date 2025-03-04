@@ -26,6 +26,10 @@
                         </a>
                     </div>
                 </div>
+                <div class="stock-container">
+                    <p th:if="${product.quantity > 0}" class="in-stock">В наличност</p>
+                    <p th:unless="${product.quantity > 0}" class="out-of-stock">Не е в наличност</p>
+                </div>
                 <p th:text="${product.price} + ' лв.'" class="price"></p>
                 <p th:text="'Brand: ' + ${product.brand.name}" class="brand"></p>
 
