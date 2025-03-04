@@ -38,6 +38,7 @@ public class ProductController {
         ModelAndView modelAndView = new ModelAndView();
         List<Product> products = (category != null) ?
                 productService.findByCategory(category) : productService.findAll();
+
         modelAndView.setViewName("products");
         modelAndView.addObject("products", products);
         modelAndView.addObject("user", user);
@@ -49,9 +50,14 @@ public class ProductController {
                                           @PathVariable UUID id) {
         User user = userService.getUserById(authenticationMetadata.getUserId());
         Product product = productService.getProductById(id);
+        List<Product> productsWithSameName = productService.getProductsByName(product.getName());
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("product-details");
         modelAndView.addObject("product", product);
+
+        modelAndView.addObject("relatedProducts", productsWithSameName);
+
         modelAndView.addObject("user", user);
 
         return modelAndView;

@@ -2,15 +2,116 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/logged-header.css">
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/product-details.css">
     <title th:text="${product.name}"></title>
 </head>
 <body>
-    <h2>adsfafdasfa</h2>
-    <h1 th:text="${product.name}"></h1>
-    <img th:src="${product.image}" alt="Product Image">
-    <p th:text="${product.price} + ' лв.'"></p>
-    <p th:text="${product.description}"></p>
+    <th:block th:insert="fragments/header-fragment :: header"></th:block>
 
-    <button class="add-to-cart">Добави в кошницата</button>
+    <div class="container">
+        <div class="product">
+            <div class="product-image">
+                <img th:src="${product.image}" alt="Product Image">
+            </div>
+            <div class="product-info">
+                <h1 th:text="${product.name}"></h1>
+                <p th:text="${product.description}"></p>
+                <div th:if="${relatedProducts.size() > 0}"  class="menu-container">
+                    <div th:each="relatedProduct : ${relatedProducts}" class="menu-option">
+                        <a th:href="@{'/product/' + ${relatedProduct.id}}">
+                            <span th:text="${relatedProduct.volume} + ' мл.'"></span>
+                            <span th:text="${relatedProduct.price} + ' лв.'" class="price"></span>
+                        </a>
+                    </div>
+                </div>
+                <p th:text="${product.price} + ' лв.'" class="price"></p>
+                <p th:text="'Brand: ' + ${product.brand.name}" class="brand"></p>
+
+                <div class="quantity">
+                    <button class="minus" aria-label="Decrease">&minus;</button>
+                    <input type="number" class="input-box" value="1" min="1" max="10">
+                    <button class="plus" aria-label="Increase">&plus;</button>
+                </div>
+
+                <button class="add-to-cart" th:data-id="${product.id}">Добави в кошницата</button>
+                <div class="favorite-container">
+                    <button class="favorite-button">
+                        <span class="heart-icon">♡</span> Добави в любими
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="tabs">
+            <button class="tab active">Описание</button>
+            <button class="tab">Състав</button>
+            <button class="tab">За марката</button>
+        </div>
+
+        <div class="tab-content">
+            <div class="product-description">
+                <h1>Описание Narciso Rodriguez For Him Bleu Noir</h1>
+
+                <table class="product-table">
+                    <tr>
+                        <td>Глава</td>
+                        <td>ирис, розов пипер</td>
+                    </tr>
+                    <tr>
+                        <td>Сърце</td>
+                        <td>мускус</td>
+                    </tr>
+                    <tr>
+                        <td>База</td>
+                        <td>пачули, кехлибар</td>
+                    </tr>
+                    <tr>
+                        <td>Вид аромат</td>
+                        <td>Дървесни</td>
+                    </tr>
+                </table>
+
+                <p class="description-text">
+                    Очарователната парфюмна вода Narciso Rodriguez For Him Bleu Noir примамва с изискана комбинация на
+                    „син“ хималайски кедър и черно абаносово дърво.
+                </p>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div class="ingridient-contrainer">
+                <h1 class="second-content">Състав на narciso rodriguez for him bleu noir</h1>
+                <div class="product-ingridients">
+                    <h4>Пълен списък съставките</h4>
+                    <p>
+                        ALCOHOL, PARFUM (FRAGRANCE), AQUA (WATER), LIMONENE, BENZYL SALICYLATE, LINALOOL, HEXYL
+                        CINNAMAL, CITRONELLOL, BUTYL METHOXYDIBENZOYLMETHANE, ETHYLHEXYL METHOXYCINNAMATE, COUMARIN,
+                        BENZYL BENZOATE, BHT, CITRAL, GERANIOL
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div class="brand-container">
+                <h1 class="third-content">
+                    За марката narciso rodriguez
+                </h1>
+                <div class="brand-info">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore perspiciatis, odio accusantium
+                        totam quam laboriosam autem non ex expedita maxime, officia culpa ipsum! Quidem soluta quo
+                        corporis hic, assumenda dolore!Lorem
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem obcaecati, voluptatem dolorum
+                        necessitatibus ipsum animi sit voluptatum eveniet ea voluptate quas praesentium fuga suscipit
+                        maxime eligendi debitis rem nam eius? ipsum dolor sit amet consectetur adipisicing elit. Magni
+                        repellendus et blanditiis unde dolorum fugiat eligendi, quod ab praesentium. Iusto minima totam
+                        quia esse ipsa culpa facere similique vitae reprehenderit.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+<script src="/css/product-details.js"></script>
 </body>
 </html>

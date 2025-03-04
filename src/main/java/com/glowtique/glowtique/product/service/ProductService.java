@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -29,5 +30,13 @@ public class ProductService {
 
     public Product getProductById(UUID id) {
         return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    }
+
+    public List<Product> getProductsByName(String name) {
+        return productRepository.findByName(name);
+    }
+
+    public List<Product> getProductsWithSameName(Product product, List<Product> products) {
+        return products.stream().filter(p -> !p.getId().equals(product.getId())).toList();
     }
 }

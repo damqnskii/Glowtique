@@ -50,6 +50,7 @@
             <a th:href="@{/product/{id}(id=${product.id})}" class="product-link">
                 <img th:src="${product.image}" alt="Product 1">
                 <h3 th:text="${product.name}" class="product-name"></h3>
+                <h6 th:text="${product.description} + ' ' + ${product.volume} + ' мл.'" class="product-details"></h6>
             </a>
             <div class="product-details">
                 <p th:text="${product.price} + ' лв.'" class="price"></p>

@@ -20,7 +20,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne
@@ -36,7 +36,13 @@ public class Product {
 
     private String ingredients;
 
+    @Column(length = 750)
     private String description;
+
+    private int volume;
+
+    @Enumerated(EnumType.STRING)
+    private ProductGender productGender;
 
     private String image;
 
