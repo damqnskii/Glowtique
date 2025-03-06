@@ -2,11 +2,13 @@ package com.glowtique.glowtique.user.service;
 
 import com.glowtique.glowtique.cart.model.Cart;
 import com.glowtique.glowtique.exception.AlreadyRegEmailException;
+import com.glowtique.glowtique.exception.ExistingPhoneNumber;
 import com.glowtique.glowtique.user.model.UserRole;
 import com.glowtique.glowtique.user.repository.UserRepository;
 import com.glowtique.glowtique.web.dto.EditProfileRequest;
 import com.glowtique.glowtique.web.dto.LoginRequest;
 import com.glowtique.glowtique.web.dto.RegisterRequest;
+import com.glowtique.glowtique.wishlistitem.model.WishlistItem;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -54,6 +53,7 @@ public class UserService {
 
     }
 
+    @Transactional
     public User register (RegisterRequest registerRequest) {
         Optional<User> optionalUser = userRepository.findUserByEmail(registerRequest.getEmail());
 
@@ -81,6 +81,7 @@ public class UserService {
                 .orders(new HashSet<>())
                 .wishlistItems(new HashSet<>())
                 .cart(new Cart())
+                .isActive(true)
                 .build();
         return userRepository.save(user);
     }
@@ -97,6 +98,10 @@ public class UserService {
         if (isFigured.isPresent() && !isFigured.get().getId().equals(userId)) {
             throw new AlreadyRegEmailException("The email address already exists");
         }
+        Optional<User> isNumberRegistered = userRepository.findUserByPhoneNumber(editProfileRequest.getPhoneNumber());
+        if (isNumberRegistered.isPresent() && !isNumberRegistered.get().getId().equals(userId)) {
+            throw new ExistingPhoneNumber("The phone number already exists");
+        }
 
         user.setEmail(editProfileRequest.getEmail());
         user.setFirstName(editProfileRequest.getFirstName());
@@ -111,7 +116,4 @@ public class UserService {
 
         return userRepository.save(user);
     }
-
-
-
 }

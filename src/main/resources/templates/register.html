@@ -16,22 +16,22 @@
         <h2>Register</h2>
         <form th:action="@{/register}" th:method="POST" th:object="${registerRequest}">
             <div class="form-group">
-                <label for="firstname">First Name</label>
-                <input th:field="*{firstName}" type="text" id="firstname" name="firstname" placeholder="Enter your first name" required>
+                <label for="firstname">Име</label>
+                <input th:field="*{firstName}" type="text" id="firstname" name="firstname" placeholder="Въведете първо име" required>
                 <p class="alert-warning" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
             </div>
             <div class="form-group">
-                <label for="lastname">Last Name</label>
-                <input th:field="*{lastName}" type="text" id="lastname" name="lastname" placeholder="Enter your last name" required>
+                <label for="lastname">Фамилия</label>
+                <input th:field="*{lastName}" type="text" id="lastname" name="lastname" placeholder="Въведете фамилия" required>
                 <p class="alert-warning" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input th:field="*{email}" type="email" id="email" name="email" placeholder="Enter your email" required>
+                <input th:field="*{email}" type="email" id="email" name="email" placeholder="Въведете имейл" required>
                 <p class="alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
             </div>
             <div class="form-group">
-                <label for="gender">Gender (Optional)</label>
+                <label for="gender">Пол</label>
                 <select th:field="*{gender}" id="gender" name="gender">
                     <option value="" selected>Select a gender</option>
                     <option th:each="gender : ${T(com.glowtique.glowtique.user.model.UserGender).values()}"
@@ -42,18 +42,18 @@
                 <p class="alert-warning" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></p>
             </div>
             <div class="form-group">
-                <label for="birthday">Birthday</label>
+                <label for="birthday">Рожденна дата</label>
                 <input th:field="*{birthday}" type="date" id="birthday" name="dateOfBirth">
                 <p class="alert-warning" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></p>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
-                <input th:field="*{password}" type="password" id="password" name="password" placeholder="Enter your password" required>
+                <label for="password">Парола</label>
+                <input th:field="*{password}" type="password" id="password" name="password" placeholder="Въведете парола" required>
                 <p class="alert-warning" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
             </div>
             <div class="form-group">
-                <label for="confirm-password">Confirm Password</label>
-                <input th:field="*{confirmPassword}" type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm your password" required>
+                <label for="confirm-password">Повторете паролата</label>
+                <input th:field="*{confirmPassword}" type="password" id="confirm-password" name="confirmPassword" placeholder="Въведете парола" required>
                 <p class="alert-warning" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></p>
             </div>
 

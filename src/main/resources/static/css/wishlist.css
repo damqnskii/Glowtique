@@ -86,25 +86,12 @@ h2 {
     padding: 20px 20px 20px 0;
     width: 100%; /* Ensures full width */
 }
-.wishlist-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    font-size: 22px;
-    color: #ccc;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
+
 .banner p {
     text-align: center;
 }
 
-.wishlist-btn:hover {
-    color: #a10101;
-}
-/* Product Card */
+
 .product {
     position: relative;
     background: white;
@@ -114,7 +101,7 @@ h2 {
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: space-around; /* Ensures spacing */
+    justify-content: space-between; /* Ensures spacing */
     height: 95%; /* Ensures equal height */
     width: 200px;
 }

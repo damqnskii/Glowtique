@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="/css/products.css">
     <link rel="stylesheet" href="/css/logged-header.css">
     <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/wishlisted.css">
+    <link rel="stylesheet" href="/css/toast.css">
+
 </head>
 <body>
     <th:block th:insert="fragments/header-fragment :: header"></th:block>
@@ -32,19 +35,38 @@
             </div>
             <button type="submit" class="apply-filters">Приложи филтрите</button>
         </form>
-        <div class="wishlist">
-            <h4>Любими Продукти</h4>
-            <p>Все още нямате харесани продукти</p>
+        <h4>Любими Продукти</h4>
+        <div class="wishlist" th:each="item : ${wishlistItems}">
+            <ul id="wishlist-items">
+                <li class="wishlist-item">
+                    <img th:src="${item.product.image}" alt="product-image">
+                    <div class="item-details-side">
+                        <a th:href="@{/product/{id}(id=${item.product.id})}" class="item-name-side" th:text="${item.product.name}"></a>
+                        <p th:text="${item.product.price} + ' лв.'" class="price-side"></p>
+                        <a th:href="@{/cart}" class="add-to-cart-side">ADD TO CART</a>
+                    </div>
+                    <button type="button" class="wishlist-btn-liked" th:data-id="${item.product.id}">
+                        <span id="remove" class="remove-side">×</span>
+                    </button>
+                    <script>
+                        document.addEventListener("click", function(event) {
+                            if (event.target.classList.contains("remove-side")) {
+                                event.target.parentElement.remove(); // Removes only the clicked item's parent <li>
+                            }
+                        });
+                    </script>
+                </li>
+            </ul>
         </div>
     </aside>
 
     <main class="product-container">
         <div th:each="product : ${products}" class="product">
-            <form th:action="@{/products}" th:method="Post" th:object="${user}">
-                <button type="button" class="wishlist-btn" th:data-id="${product.id}">
-                    &#10084;
+                <button type="button"
+                        th:classappend="${#lists.contains(wishListed, product.id) ? 'wishlist-btn-liked' : 'wishlist-btn'}"
+                        th:data-id="${product.id}">
+                    <span class="heart-icon">&#10084;</span>
                 </button>
-            </form>
             <span th:if="${product.quantity > 0}" class="stock-status-ready">В наличност</span>
             <span th:unless="${product.quantity > 0}" class="stock-status-out">Не е в наличност</span>
             <a th:href="@{/product/{id}(id=${product.id})}" class="product-link">
@@ -55,10 +77,15 @@
             <div class="product-details">
                 <p th:text="${product.price} + ' лв.'" class="price"></p>
             </div>
-            <button class="add-to-cart" th:data-id="${product.id}" onclick="addToWishlist(this)">Добави в кошницата</button>
+            <button class="add-to-cart" th:data-id="${product.id}">Добави в кошницата</button>
         </div>
     </main>
+    <div id="toast" class="toast hidden">
+        <span id="toast-message"></span>
+    </div>
 </div>
 <script src="/css/products.js"></script>
+<script src="/css/addwishlist.js"></script>
+<script src="/css/removewishlist.js"></script>
 </body>
 </html>

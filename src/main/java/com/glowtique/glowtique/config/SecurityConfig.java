@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class SecurityConfig {
@@ -17,11 +18,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                 // Disable CSRF for simplicity, but should be enabled for real apps
+                .csrf(csrf ->
+                        csrf.ignoringRequestMatchers("/wishlist/**"))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/admin-dashboard").hasRole("ADMIN")
                         .requestMatchers("/", "/register", "/login").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/wishlist/**").permitAll()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/login") // Custom login page
@@ -32,10 +36,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
-                        .permitAll()
-                )
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")).logoutSuccessUrl("/"))
                 .userDetailsService(customUserDetailsService);
 
         return http.build();

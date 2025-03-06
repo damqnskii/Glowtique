@@ -83,22 +83,7 @@ body {
     padding: 20px;
     width: 100%;
 }
-.wishlist-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    font-size: 22px;
-    color: #ccc;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
 
-.wishlist-btn:hover {
-    color: #a10101;
-}
-/* Product Card */
 .product {
     position: relative;
     background: white;
@@ -180,3 +165,82 @@ body {
     background: #6d472c;
 }
 
+.wishlist {
+    max-width: 350px;
+    margin: auto;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+h2 span {
+    font-weight: normal;
+    color: gray;
+    font-size: 14px;
+}
+
+#wishlist-items {
+    list-style: none;
+    padding: 0;
+}
+
+.wishlist-item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    position: relative;
+}
+
+#wishlist-items li img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.item-details-side {
+    flex-grow: 1;
+}
+
+.item-name-side {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+    color: black;
+    text-decoration: none;
+}
+
+.item-name-side:hover {
+    color: #007bff;
+}
+
+.price-side {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.add-to-cart-side {
+    display: inline-block;
+    color: #8B5E3C;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.add-to-cart-side:hover {
+    text-decoration: underline;
+}
+
+.remove-side {
+    font-size: 20px;
+    color: gray;
+    cursor: pointer;
+    padding: 0;
+}
+
+.remove-side:hover {
+    color: red;
+}

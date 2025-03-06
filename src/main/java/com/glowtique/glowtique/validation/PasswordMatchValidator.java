@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PasswordMatchValidator {
-    String message() default "Passwords do not match!";
+    String message() default "Паролите Ви не съвпадат!";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

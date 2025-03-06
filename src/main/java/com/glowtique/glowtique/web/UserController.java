@@ -1,13 +1,18 @@
 package com.glowtique.glowtique.web;
 
 import com.glowtique.glowtique.security.AuthenticationMetadata;
+import com.glowtique.glowtique.user.model.CustomUserDetailsService;
 import com.glowtique.glowtique.user.service.UserService;
 import com.glowtique.glowtique.web.dto.EditProfileRequest;
+import com.glowtique.glowtique.web.dto.ProductRequest;
 import com.glowtique.glowtique.web.mapper.DtoMapper;
+import com.glowtique.glowtique.wishlistitem.model.WishlistItem;
+import com.glowtique.glowtique.wishlistitem.service.WishlistItemService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,19 +25,23 @@ import com.glowtique.glowtique.user.model.User;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
-@RequestMapping()
+@RequestMapping
 public class UserController {
     private final UserService userService;
+    private final WishlistItemService wishlistItemService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, WishlistItemService wishlistItemService) {
         this.userService = userService;
+        this.wishlistItemService = wishlistItemService;
     }
 
-    @GetMapping()
+
+    @GetMapping("/users")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ModelAndView getAllUsers(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         List<User> users = userService.getAllUsers();
@@ -42,6 +51,12 @@ public class UserController {
         modelAndView.addObject("users", users);
 
         return modelAndView;
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/admin-dashboard")
+    public ModelAndView getAdminDashboard() {
+        return new ModelAndView("admin-dashboard");
     }
 
     @GetMapping("/profile")
@@ -82,12 +97,14 @@ public class UserController {
         return new ModelAndView("redirect:/profile");
 
     }
-
     @GetMapping("/wishlist")
     public ModelAndView getWishlist(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         User user = userService.getUserById(authenticationMetadata.getUserId());
+        List<ProductRequest> wishlistItems = wishlistItemService.getWishlistItems(user);
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("wishlist");
+        modelAndView.addObject("wishlistItems", wishlistItems);
         modelAndView.addObject("user", user);
         return modelAndView;
     }

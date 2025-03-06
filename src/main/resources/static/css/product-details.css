@@ -132,26 +132,34 @@ body {
     align-items: center; /* Centers vertically */
     height: auto; /* Set height for demonstration */
 }
-.favorite-button {
-    display: flex;
-    align-items: center;
+.wishlist-btn-liked {
+    top: 10px;
+    right: 10px;
+    background: transparent;
     border: none;
-    background: none;
-    font-size: 16px;
-    color: #333;
+    font-size: 36px;
+    color: #dd2020;
     cursor: pointer;
-    padding: 5px 10px;
+    transition: color 0.3s ease;
 }
 
-.favorite-button .heart-icon {
-    font-size: 30px;
-    margin-right: 5px;
-    transition: color 0.3s ease-in-out;
+.wishlist-btn {
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 36px;
+    color: #000000;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.wishlist-btn-liked:hover {
+    color: #000000;
+}
+.wishlist-btn:hover {
+    color: #dd2020;
 }
 
-.favorite-button:hover .heart-icon {
-    color: #c10000;
-}
 
 .add-to-cart:hover {
     background-color: #5e3310;
@@ -198,12 +206,6 @@ body {
 
 .input-box[type="number"] {
     -moz-appearance: textfield;
-}
-@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
-* {
-    font-family: "Mulish", sans-serif;
-    font-optical-sizing: auto;
-    font-style: normal;
 }
 .tabs {
     display: flex;

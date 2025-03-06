@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/logged-header.css">
     <link rel="stylesheet" href="/css/font.css">
     <link rel="stylesheet" href="/css/wishlist.css">
+    <link rel="stylesheet" href="/css/wishlisted.css">
+    <link rel="stylesheet" href="/css/toast.css">
 
     <title>Любими продукти</title>
 </head>
@@ -36,7 +39,7 @@
             <h1>Любими продукти</h1>
 
             <div class="banner">
-                <p>Тук ще намерите вашите любими продукти. Добавете ги към количката за лесна поръчка!</p>
+                <p>Тук ще намерите вашите любими продукти. Добавете ги към кошницата за лесна поръчка!</p>
             </div>
 
             <!-- Wishlist Products -->
@@ -44,93 +47,35 @@
 
                 <div class="product-container">
 
-                    <!-- Product 1 -->
-                    <div class="product">
-                        <button type="button" class="wishlist-btn" data-id="1">&#10084;</button>
-                        <span class="stock-status-ready">В наличност</span>
-                        <a href="/product/1" class="product-link">
-                            <img src="https://parfium.bg/2703-medium_default/hugo-boss-the-scent-toaletna-voda-za-myje.jpg" alt="Product 1">
-                            <h3 class="product-name">Hugo Boss The Scent</h3>
-                            <h6 class="product-details">Парфюмна вода за мъже 100 мл.</h6>
-                        </a>
-                        <div class="product-details">
-                            <p class="price">248.00 лв.</p>
-                        </div>
-                        <button class="add-to-cart" data-id="1">Добави в кошницата</button>
-                    </div>
+                    <div class="product" th:each="item : ${wishlistItems}">
+                        <form  th:action="@{/wishlist}" th:method="POST">
+                            <button type="button" class="wishlist-btn-liked" th:data-id="${item.id}">
+                                <span class="heart-icon">&#10084;</span>
+                            </button>
+                        </form>
 
-                    <!-- Product 2 -->
-                    <div class="product">
-                        <button type="button" class="wishlist-btn" data-id="2">&#10084;</button>
-                        <span class="stock-status-out">Не е в наличност</span>
-                        <a href="/product/2" class="product-link">
-                            <img src="https://parfium.bg/2703-medium_default/hugo-boss-the-scent-toaletna-voda-za-myje.jpg" alt="Product 2">
-                            <h3 class="product-name">Hugo Boss The Scent</h3>
-                            <h6 class="product-details">Парфюмна вода за мъже 200 мл.</h6>
+                        <span th:if="${item.quantity > 0}" class="stock-status-ready">В наличност</span>
+                        <span th:unless="${item.quantity > 0}" class="stock-status-out">Не е в наличност</span>
+                        <a th:href="@{/product/{id}(id=${item.id})}" class="product-link">
+                            <img th:src="${item.image}" alt="Product Image">
+                            <h3 th:text="${item.name}" class="product-name"></h3>
+                            <h6 th:text="${item.description} + ' ' + ${item.volume} + ' мл.'" class="product-details"></h6>
                         </a>
                         <div class="product-details">
-                            <p class="price">420.00 лв.</p>
+                            <p th:text="${item.price} +  ' лв.'" class="price"></p>
                         </div>
-                        <button class="add-to-cart" data-id="2">Добави в кошницата</button>
+                        <button class="add-to-cart" th:data-id="${item.id} ">Добави в кошницата</button>
                     </div>
-
-                    <!-- Product 3 -->
-                    <div class="product">
-                        <button type="button" class="wishlist-btn" data-id="3">&#10084;</button>
-                        <span class="stock-status-ready">В наличност</span>
-                        <a href="/product/3" class="product-link">
-                            <img src="https://parfium.bg/2703-medium_default/hugo-boss-the-scent-toaletna-voda-za-myje.jpg" alt="Product 3">
-                            <h3 class="product-name">Hugo Boss The Scent</h3>
-                            <h6 class="product-details">Парфюмна вода за мъже 50 мл.</h6>
-                        </a>
-                        <div class="product-details">
-                            <p class="price">125.00 лв.</p>
-                        </div>
-                        <button class="add-to-cart" data-id="3">Добави в кошницата</button>
-                    </div>
-                    <div class="product">
-                        <button type="button" class="wishlist-btn" data-id="2">&#10084;</button>
-                        <span class="stock-status-out">Не е в наличност</span>
-                        <a href="/product/2" class="product-link">
-                            <img src="https://parfium.bg/2703-medium_default/hugo-boss-the-scent-toaletna-voda-za-myje.jpg" alt="Product 2">
-                            <h3 class="product-name">Hugo Boss The Scent</h3>
-                            <h6 class="product-details">Парфюмна вода за мъже 200 мл.</h6>
-                        </a>
-                        <div class="product-details">
-                            <p class="price">420.00 лв.</p>
-                        </div>
-                        <button class="add-to-cart" data-id="2">Добави в кошницата</button>
-                    </div><div class="product">
-                    <button type="button" class="wishlist-btn" data-id="2">&#10084;</button>
-                    <span class="stock-status-out">Не е в наличност</span>
-                    <a href="/product/2" class="product-link">
-                        <img src="https://parfium.bg/2703-medium_default/hugo-boss-the-scent-toaletna-voda-za-myje.jpg" alt="Product 2">
-                        <h3 class="product-name">Hugo Boss The Scent</h3>
-                        <h6 class="product-details">Парфюмна вода за мъже 200 мл.</h6>
-                    </a>
-                    <div class="product-details">
-                        <p class="price">420.00 лв.</p>
-                    </div>
-                    <button class="add-to-cart" data-id="2">Добави в кошницата</button>
-                </div><div class="product">
-                    <button type="button" class="wishlist-btn" data-id="2">&#10084;</button>
-                    <span class="stock-status-out">Не е в наличност</span>
-                    <a href="/product/2" class="product-link">
-                        <img src="https://parfium.bg/2703-medium_default/hugo-boss-the-scent-toaletna-voda-za-myje.jpg" alt="Product 2">
-                        <h3 class="product-name">Hugo Boss The Scent</h3>
-                        <h6 class="product-details">Парфюмна вода за мъже 200 мл.</h6>
-                    </a>
-                    <div class="product-details">
-                        <p class="price">420.00 лв.</p>
-                    </div>
-                    <button class="add-to-cart" data-id="2">Добави в кошницата</button>
-                </div>
                 </div>
             </section>
         </main>
     </div>
+    <div id="toast" class="toast hidden">
+        <span id="toast-message"></span>
+    </div>
 </main>
 
-
+<script src="/css/addwishlist.js"></script>
+<script src="/css/removewishlist.js"></script>
 </body>
 </html>

@@ -41,6 +41,7 @@ public class User {
 
     private LocalDate birthday;
 
+    @Column(unique = true)
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
@@ -74,6 +75,6 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<WishlistItem> wishlistItems = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Cart cart;
 }

@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/css/logged-header.css">
     <link rel="stylesheet" href="/css/font.css">
     <link rel="stylesheet" href="/css/product-details.css">
+    <link rel="stylesheet" href="/css/toast.css">
     <title th:text="${product.name}"></title>
 </head>
 <body>
@@ -41,8 +42,10 @@
 
                 <button class="add-to-cart" th:data-id="${product.id}">Добави в кошницата</button>
                 <div class="favorite-container">
-                    <button class="favorite-button">
-                        <span class="heart-icon">♡</span> Добави в любими
+                    <button type="button" class="favorite-button"
+                            th:classappend="${#lists.contains(wishListed, product.id) ? 'wishlist-btn-liked' : 'wishlist-btn'}"
+                            th:data-id="${product.id}">
+                        <span class="heart-icon">&#10084;</span>
                     </button>
                 </div>
             </div>
@@ -58,7 +61,7 @@
 
         <div class="tab-content">
             <div class="product-description">
-                <h1>Описание Narciso Rodriguez For Him Bleu Noir</h1>
+                <h1 th:text="'Описание ' + ${product.name}">Описание Narciso Rodriguez For Him Bleu Noir</h1>
 
                 <table class="product-table">
                     <tr>
@@ -87,35 +90,31 @@
         </div>
         <div class="tab-content">
             <div class="ingridient-contrainer">
-                <h1 class="second-content">Състав на narciso rodriguez for him bleu noir</h1>
+                <h1 class="second-content" th:text="'Състав ' + ${product.name}"></h1>
                 <div class="product-ingridients">
                     <h4>Пълен списък съставките</h4>
-                    <p>
-                        ALCOHOL, PARFUM (FRAGRANCE), AQUA (WATER), LIMONENE, BENZYL SALICYLATE, LINALOOL, HEXYL
-                        CINNAMAL, CITRONELLOL, BUTYL METHOXYDIBENZOYLMETHANE, ETHYLHEXYL METHOXYCINNAMATE, COUMARIN,
-                        BENZYL BENZOATE, BHT, CITRAL, GERANIOL
-                    </p>
+                    <p th:text="${product.ingredients}"></p>
                 </div>
             </div>
         </div>
         <div class="tab-content">
             <div class="brand-container">
-                <h1 class="third-content">
+                <h1 class="third-content" th:text="'За марката ' + ${product.brand.name}">
                     За марката narciso rodriguez
                 </h1>
                 <div class="brand-info">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore perspiciatis, odio accusantium
-                        totam quam laboriosam autem non ex expedita maxime, officia culpa ipsum! Quidem soluta quo
-                        corporis hic, assumenda dolore!Lorem
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem obcaecati, voluptatem dolorum
-                        necessitatibus ipsum animi sit voluptatum eveniet ea voluptate quas praesentium fuga suscipit
-                        maxime eligendi debitis rem nam eius? ipsum dolor sit amet consectetur adipisicing elit. Magni
-                        repellendus et blanditiis unde dolorum fugiat eligendi, quod ab praesentium. Iusto minima totam
-                        quia esse ipsa culpa facere similique vitae reprehenderit.</p>
+                    <p th:text="${product.brand.description}"></p>
                 </div>
             </div>
         </div>
+        <div id="toast" class="toast hidden">
+            <span id="toast-message"></span>
+        </div>
     </main>
+
 <script src="/css/product-details.js"></script>
+<script src="/css/addwishlist.js"></script>
+<script src="/css/removewishlist.js"></script>
+
 </body>
 </html>

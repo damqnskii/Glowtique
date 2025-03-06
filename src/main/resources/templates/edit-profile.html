@@ -55,7 +55,7 @@
         <div class="form-group">
           <label for="phone">Телефонен номер</label>
           <input th:field="*{phoneNumber}" type="tel" id="phone" name="phoneNumber"
-                 th:value="${user.phoneNumber}" disabled>
+                 th:value="${user.phoneNumber} ?: ' '" disabled>
           <p class="alert-warning" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></p>
         </div>
 
@@ -63,11 +63,11 @@
 
         <div class="form-group">
           <label for="country">Държава</label>
-          <select th:field="*{country}" id="country" name="country" disabled th:placeholder="${user.country.name()}">
+          <select th:field="*{country}" id="country" name="country" disabled th:placeholder="${user.country}">
             <option th:each="country : ${T(com.glowtique.glowtique.user.model.Country).values()}"
-                    th:value="${country.name()}"
+                    th:value="${country}"
                     th:text="${#strings.capitalize(#strings.toLowerCase(country))}"
-                    th:selected="${user.country.name()}">
+                    th:selected="${user.country}">
             </option>
           </select>
           <p class="alert-warning" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></p>
@@ -76,14 +76,14 @@
         <div class="form-group">
           <label for="town">Град</label>
           <input th:field="*{town}" type="text" id="town" name="town"
-                 th:value="${user.town}" th:placeholder="${user.town}" disabled>
+                 th:value="${user.town} ?: ' '" th:placeholder="${user.town}" disabled>
           <p class="alert-warning" th:if="${#fields.hasErrors('town')}" th:errors="*{town}"></p>
         </div>
 
         <div class="form-group">
           <label for="street">Улица</label>
           <input th:field="*{street}" type="text" id="street" name="street"
-                 th:value="${user.street}" th:placeholder="${user.street}" disabled>
+                 th:value="${user.street} ?: ' '" th:placeholder="${user.street}" disabled>
           <p class="alert-warning" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></p>
         </div>
 
@@ -91,13 +91,13 @@
         <div class="form-group">
           <label for="factureAddress">Адрес на фактуриране</label>
           <input th:field="*{factureAddress}" type="text" id="factureAddress" name="factureAddress"
-                 th:value="${user.factureAddress}" th:placeholder="${user.factureAddress}" disabled>
+                 th:value="${user.factureAddress} ?: ' '" th:placeholder="${user.factureAddress}" disabled>
           <p class="alert-warning" th:if="${#fields.hasErrors('factureAddress')}" th:errors="*{factureAddress}"></p>
         </div>
         <div class="form-group">
           <label for="shippingAddress">Адрес на доставка</label>
           <input th:field="*{shippingAddress}" type="text" id="shippingAddress" name="shippingAddress"
-                 th:value="${user.shippingAddress}" th:placeholder="${user.shippingAddress}" disabled>
+                 th:value="${user.shippingAddress} ?: ' '" th:placeholder="${user.shippingAddress}" disabled>
           <p class="alert-warning" th:if="${#fields.hasErrors('shippingAddress')}" th:errors="*{shippingAddress}"></p>
         </div>
 

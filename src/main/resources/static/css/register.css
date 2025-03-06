@@ -7,15 +7,15 @@
 }
 body {
     margin: 0;
-    background-color: white;
+    background-color: #f9f9f9; /* Softer white */
+    color: #444; /* Darker gray for better readability */
 }
 
 .top-bar {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: inherit;
-    background-color: lightgray;
+    background-color: #f0f0f0; /* Lighter gray */
     padding: 10px;
 }
 
@@ -32,17 +32,17 @@ main {
 }
 
 .registration-container {
-    background-color: rgb(99, 99, 99);
+    background-color: #8B5E3C; /* Keeping the same brown */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     width: 100%;
     max-width: 400px;
 }
 
 .label:before {
-    content:"*" ;
-    color:red
+    content: "*";
+    color: red;
 }
 
 .registration-container h2 {
@@ -66,15 +66,23 @@ main {
 .form-group input, .form-group select {
     width: 95%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #bbb;
     border-radius: 5px;
     font-size: 16px;
+    background-color: #fff;
+    color: #333;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: #8B5E3C;
+    outline: none;
+    box-shadow: 0 0 5px rgba(139, 94, 60, 0.5);
 }
 
 .register-button {
     width: 100%;
     padding: 10px;
-    background-color: gray;
+    background-color: #6A4A3C; /* Darker brown */
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -85,38 +93,40 @@ main {
 }
 
 .register-button:hover {
-    background-color: lightgray;
+    background-color: #5C4033; /* Even darker brown */
 }
+
 .already-registered {
     text-align: center;
     margin-top: 20px;
 }
 
 .already-registered a {
-    color: white;
+    color: #FFD700; /* Gold for a premium look */
     text-decoration: none;
     transition: color 0.3s;
 }
 
 .already-registered a:hover {
-    color: gray;
+    color: #E0C200; /* Slightly darker gold */
 }
 
 .footer {
     width: 100%;
     text-align: center;
     padding: 10px 0;
-    border-top: 1px solid inherit;
+    border-top: 1px solid #ddd;
     bottom: 0;
     left: 0;
     position: fixed;
-    background-color: lightgray;
+    background-color: #f0f0f0; /* Soft gray */
+    color: #444;
 }
 
 .alert-warning {
-    color: #d9534f; /* Red color for error messages */
-    background-color: #f9d6d5; /* Light red background */
-    border: 1px solid #d9534f; /* Red border */
+    color: #a94442; /* Darker red */
+    background-color: #f2dede; /* Softer red background */
+    border: 1px solid #a94442;
     padding: 10px;
     border-radius: 5px;
     margin-top: 5px;
