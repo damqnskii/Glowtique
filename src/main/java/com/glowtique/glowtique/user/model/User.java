@@ -72,9 +72,9 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Order> orders = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<WishlistItem> wishlistItems = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Cart cart;
 }

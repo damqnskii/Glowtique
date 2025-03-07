@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Add event listener to all wishlist buttons
     document.querySelectorAll(".wishlist-btn-liked").forEach(button => {
         button.addEventListener("click", function () {
             toggleWishlist(this);
@@ -11,13 +10,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const csrfToken = document.querySelector("meta[name='_csrf']")?.getAttribute("content") || ""; // Get CSRF token if available
         const isLiked = button.classList.contains("wishlist-btn-liked");
 
-        const url = isLiked ? `/wishlist/remove/${productId}` : `/wishlist/add/${productId}`; // Determine action based on state
+        const url = isLiked ? `/wishlist/remove/${productId}` : `/wishlist/add/${productId}`;
 
         fetch(url, {
-            method: "POST",  // We use POST for both add and remove due to form limitations
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                ...(csrfToken && { "X-CSRF-TOKEN": csrfToken }) // Add CSRF token if available
+                ...(csrfToken && { "X-CSRF-TOKEN": csrfToken })
             }
         })
             .then(response => {
@@ -27,16 +26,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json();
             })
             .then(data => {
-                console.log("Wishlist Response:", data); // Debugging
+                console.log("Wishlist Response:", data);
 
                 if (isLiked) {
-                    // If the product was liked, remove it from wishlist
                     button.classList.remove("wishlist-btn-liked");
                     button.classList.add("wishlist-btn");
                     button.innerHTML = "&#10084";
                     showToast("Продуктът беше премахнат от любими.");
                 } else {
-                    // If the product was not liked, add it to the wishlist
                     button.classList.add("wishlist-btn-liked");
                     button.classList.remove("wishlist-btn");
                     button.innerHTML = "&#10084";
@@ -53,12 +50,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const toastMessage = document.getElementById("toast-message");
 
         toastMessage.textContent = message;
-        toast.style.backgroundColor = isError ? '#e74c3c' : '#333'; // Red for error, default for success
+        toast.style.backgroundColor = isError ? '#e74c3c' : '#333';
 
         toast.classList.add("show");
         toast.classList.remove("hidden");
 
-        // Automatically hide the toast after 3 seconds
         setTimeout(() => {
             toast.classList.remove("show");
             toast.classList.add("hidden");

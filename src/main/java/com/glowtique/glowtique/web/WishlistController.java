@@ -38,6 +38,7 @@ public class WishlistController {
         return ResponseEntity.ok(wishlistItems);
     }
 
+
     @PostMapping("/{context}/add/{productId}")
     public ResponseEntity<Map<String, Object>> addToWishlist(@PathVariable String context,
                                                              @PathVariable UUID productId,
@@ -53,12 +54,10 @@ public class WishlistController {
                 "added", added,
                 "message", added ? "Продуктът е добавен в списъка с желания!" : "Продуктът е премахнат от списъка с желания!"
         );
-
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{context}/remove/{productId}")
-    @ResponseBody
     public ResponseEntity<Map<String, Object>>  removeFromWishlist(@PathVariable String context,
             @PathVariable UUID productId, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         User user = userService.getUserById(authenticationMetadata.getUserId());

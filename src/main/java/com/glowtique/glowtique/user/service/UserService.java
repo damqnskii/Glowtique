@@ -1,8 +1,10 @@
 package com.glowtique.glowtique.user.service;
 
 import com.glowtique.glowtique.cart.model.Cart;
+import com.glowtique.glowtique.cart.service.CartService;
 import com.glowtique.glowtique.exception.AlreadyRegEmailException;
 import com.glowtique.glowtique.exception.ExistingPhoneNumber;
+import com.glowtique.glowtique.exception.UserNotExisting;
 import com.glowtique.glowtique.user.model.UserRole;
 import com.glowtique.glowtique.user.repository.UserRepository;
 import com.glowtique.glowtique.web.dto.EditProfileRequest;
@@ -25,15 +27,17 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CartService cartService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, CartService cartService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.cartService = cartService;
     }
 
     public User getUserById(UUID id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepository.findById(id).orElseThrow(() -> new UserNotExisting("User not found"));
     }
 
 
@@ -80,9 +84,11 @@ public class UserService {
                 .country(null)
                 .orders(new HashSet<>())
                 .wishlistItems(new HashSet<>())
-                .cart(new Cart())
                 .isActive(true)
                 .build();
+
+        Cart cart = cartService.createCart(user);
+        user.setCart(cart);
         return userRepository.save(user);
     }
 

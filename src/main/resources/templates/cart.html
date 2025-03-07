@@ -2,10 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" href="/css/logged-header.css">
+    <link rel="stylesheet" href="/css/cart.css">
+    <link rel="stylesheet" href="/css/font.css">
+    <title>Glowtique | Cart</title>
 </head>
 <body>
-    KOSHNICA
+    <th:block th:insert="fragments/header-fragment :: header"></th:block>
+    <form th:action="@{/cart}" th:method="Get" th:object="${user}">
+    <main>
+        <h2>Кошница</h2>
+        <div class="cart-container">
+            <div class="free-shipping">
+                <p><span class="highlight">Безплатна доставка при над 200 лв. поръчка</span></p>
+            </div>
 
+            <div th:each="item : ${cart.cartItems}" class="cart-item">
+                <img th:src="${item.product.image}" alt="Product 1">
+                <div class="item-details">
+                    <p th:text="${item.product.name}"><strong></strong></p>
+                    <p th:text="${item.product.description}"></p>
+                </div>
+                <div>
+                    <span th:text="${item.product.price} + ' лв.'"></span>
+                </div>
+                <div class="quantity">
+                    <button class="minus" aria-label="Decrease">&minus;</button>
+                    <input type="number" name="quantity" class="input-box" th:value="${item.quantity}" min="1" max="10">
+                    <button class="plus" aria-label="Increase">&plus;</button>
+                </div>
+                <div class="remove-item">
+                    <button class="remove"><span>×</span></button>
+                </div>
+            </div>
+
+
+
+
+            <div class="voucher-container">
+                <label for="voucher-code" class="voucher-label">Код на ваучера или отстъпката:</label>
+                <input type="text" id="voucher-code" class="voucher-input" placeholder="Въведете номер на купона">
+                <button class="voucher-button">OK</button>
+            </div>
+
+
+            <div class="final-price-container">
+                <p class="total-price">Крайна цена с ДДС: <strong th:text="${cart.totalPrice} + ' лв.'"></strong></p>
+            </div>
+            <div class="checkout-section">
+                <button class="redirect">Назад към магазина</button>
+                <button class="checkout-button">Поръчай</button>
+            </div>
+        </div>
+    </main>
+    </form>
 </body>
 </html>

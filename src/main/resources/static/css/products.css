@@ -226,8 +226,10 @@ h2 span {
 .add-to-cart-side {
     display: inline-block;
     color: #8B5E3C;
-    font-size: 14px;
+    font-size: 12px;
     text-decoration: none;
+    background: transparent;
+    border: none;
 }
 
 .add-to-cart-side:hover {
@@ -244,3 +246,4 @@ h2 span {
 .remove-side:hover {
     color: red;
 }
+

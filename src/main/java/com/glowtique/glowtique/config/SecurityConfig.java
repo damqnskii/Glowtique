@@ -19,12 +19,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf ->
-                        csrf.ignoringRequestMatchers("/wishlist/**"))
+                        csrf.ignoringRequestMatchers("/wishlist/**")
+                                .ignoringRequestMatchers("/cart/**"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin-dashboard").hasRole("ADMIN")
                         .requestMatchers("/", "/register", "/login").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/wishlist/**").permitAll()
+                        .requestMatchers("/cart/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
