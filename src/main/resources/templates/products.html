@@ -36,8 +36,9 @@
             <button type="submit" class="apply-filters">Приложи филтрите</button>
         </form>
         <h4>Любими Продукти</h4>
+        <div th:if="${wishlistItems.size() <= 0}" class="empty-wishlist">Нямате любими продукти</div>
         <div class="wishlist" th:each="item : ${wishlistItems}">
-            <ul id="wishlist-items">
+            <ul th:unless="${wishlistItems.size() <= 0}" id="wishlist-items">
                 <li class="wishlist-item">
                     <img th:src="${item.product.image}" alt="product-image">
                     <div class="item-details-side">
@@ -60,7 +61,7 @@
                     <script>
                         document.addEventListener("click", function(event) {
                             if (event.target.classList.contains("remove-side")) {
-                                event.target.parentElement.remove(); // Removes only the clicked item's parent <li>
+                                event.target.parentElement.remove();
                             }
                         });
                     </script>

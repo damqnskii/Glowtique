@@ -143,7 +143,6 @@ h2 {
     display:flex;
     background-color: rgb(247, 247, 247);
     padding: 1.25rem;
-    margin-top: 2rem;
     justify-content: end;
 }
 
@@ -166,13 +165,13 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: end;
-    margin-top: 2rem;
-    gap: 10px; /* Space between elements */
+    margin: 2rem 0 2rem 0;
+    gap: 10px;
 }
 
 .voucher-label {
     font-size: 16px;
-    color: #333; /* Darker text color */
+    color: #333;
 }
 
 .voucher-input {
@@ -217,4 +216,26 @@ h2 {
 }
 .remove:hover {
     color: red;
+}
+
+.empty-cart {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    font-size: 2.5rem;
+}
+.product-link {
+    text-decoration: none;
+    font-weight: 700;
+    color: black;
+}
+.product-link:visited {
+    text-decoration: none;
+}
+.product-link:hover {
+    color: #8B5E3C;
+    transition: ease-in 0.2s;
+}
+.product-link a:visited {
+    text-decoration: none;
 }

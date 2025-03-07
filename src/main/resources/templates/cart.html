@@ -17,29 +17,38 @@
                 <p><span class="highlight">Безплатна доставка при над 200 лв. поръчка</span></p>
             </div>
 
+            <div th:if="${user.cart.getCartItems().size() <= 0}">
+                <div class="empty-cart">Нямате добавени продукти в кошницата </div>
+            </div>
             <div th:each="item : ${cart.cartItems}" class="cart-item">
-                <img th:src="${item.product.image}" alt="Product 1">
+                <a th:href="@{/product/{id}(id=${item.product.id})}"><img th:src="${item.product.image}" alt="Product 1"></a>
                 <div class="item-details">
-                    <p th:text="${item.product.name}"><strong></strong></p>
+                    <a class="product-link" th:href="@{/product/{id}(id=${item.product.id})}"><p th:text="${item.product.name}"><strong></strong></p></a>
                     <p th:text="${item.product.description}"></p>
                 </div>
                 <div>
                     <span th:text="${item.product.price} + ' лв.'"></span>
                 </div>
-                <div class="quantity">
-                    <button class="minus" aria-label="Decrease">&minus;</button>
-                    <input type="number" name="quantity" class="input-box" th:value="${item.quantity}" min="1" max="10">
-                    <button class="plus" aria-label="Increase">&plus;</button>
-                </div>
-                <div class="remove-item">
-                    <button class="remove"><span>×</span></button>
-                </div>
+                <form th:action="@{/cart/update-quantity/{productId}(productId=${item.product.id})}" th:method="Put">
+                    <div class="quantity">
+                        <button class="minus" aria-label="Decrease">&minus;</button>
+                            <input type="number" name="quantity" class="input-box" th:value="${item.quantity}" min="1" max="10">
+                        <button class="plus" aria-label="Increase">&plus;</button>
+                    </div>
+                </form>
+                <form th:action="@{/cart/remove/{productId}(productId=${item.product.id})}" th:method="Post">
+                    <div class="remove-item">
+                        <button type="submit" class="remove"><span>×</span></button>
+                    </div>
+                </form>
             </div>
 
-
-
-
-            <div class="voucher-container">
+            <div th:if="${user.cart.getCartItems().size() == 0}" style="visibility:hidden" class="voucher-container">
+                <label for="voucher-code" class="voucher-label">Код на ваучера или отстъпката:</label>
+                <input type="text" class="voucher-input" placeholder="Въведете номер на купона">
+                <button class="voucher-button">OK</button>
+            </div>
+            <div th:unless="${user.cart.getCartItems().size() == 0}" class="voucher-container">
                 <label for="voucher-code" class="voucher-label">Код на ваучера или отстъпката:</label>
                 <input type="text" id="voucher-code" class="voucher-input" placeholder="Въведете номер на купона">
                 <button class="voucher-button">OK</button>
@@ -50,11 +59,12 @@
                 <p class="total-price">Крайна цена с ДДС: <strong th:text="${cart.totalPrice} + ' лв.'"></strong></p>
             </div>
             <div class="checkout-section">
-                <button class="redirect">Назад към магазина</button>
-                <button class="checkout-button">Поръчай</button>
+                <a th:href="@{redirect:/home}"><button type="submit" class="redirect">Назад към магазина</button></a>
+                <button type="submit" class="checkout-button">Поръчай</button>
             </div>
         </div>
     </main>
     </form>
+    <script src="/css/quantityUpdate.js"></script>
 </body>
 </html>

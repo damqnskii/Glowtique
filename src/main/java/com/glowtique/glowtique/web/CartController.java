@@ -5,6 +5,7 @@ import com.glowtique.glowtique.cart.service.CartService;
 import com.glowtique.glowtique.exception.UnauthorizedException;
 import com.glowtique.glowtique.security.AuthenticationMetadata;
 import com.glowtique.glowtique.user.service.UserService;
+import com.glowtique.glowtique.web.dto.UpdateQuantityRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import com.glowtique.glowtique.user.model.User;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
-@Controller
+@RestController
 public class CartController {
     private final CartService cartService;
     private final UserService userService;
@@ -39,14 +42,42 @@ public class CartController {
     }
 
     @PostMapping("/cart/add/{productId}")
-    public String addItemToCart(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata,
+    public ModelAndView addItemToCart(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata,
                                               @PathVariable UUID productId,
                                               @RequestParam int quantity) {
         if (authenticationMetadata == null || authenticationMetadata.getUserId() == null) {
-            return "redirect:/login";
+            return new ModelAndView("redirect:/login");
         }
         UUID userId = authenticationMetadata.getUserId();
-        Cart updatedCart = cartService.addItemToCart(userId, productId, quantity);
-        return "redirect:/cart";
+        cartService.addItemToCart(userId, productId, quantity);
+        return new ModelAndView("redirect:/cart");
+    }
+    @PostMapping("/cart/remove/{productId}")
+    public ModelAndView removeItemFromCart(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata,
+                                        @PathVariable UUID productId) {
+        if (authenticationMetadata == null || authenticationMetadata.getUserId() == null) {
+            return new ModelAndView("redirect:/login");
+        }
+        UUID userId = authenticationMetadata.getUserId();
+        cartService.removeItemFromCart(userId, productId);
+        return new ModelAndView("redirect:/cart");
+    }
+
+    @PutMapping("/cart/update-quantity/{productId}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> updateQuantity(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata,
+                                                              @PathVariable UUID productId,
+                                                              @RequestParam("quantity") int quantity) {
+        Cart updateCart = cartService.updateQuantity(authenticationMetadata.getUserId(), productId, quantity);
+
+        if (authenticationMetadata.getUserId() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User is not authenticated!"));
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("totalPrice", updateCart.getTotalPrice());
+        response.put("status", "success");
+
+        return ResponseEntity.ok(response);
     }
 }

@@ -2,6 +2,7 @@ package com.glowtique.glowtique.cart.service;
 
 import com.glowtique.glowtique.cart.model.Cart;
 import com.glowtique.glowtique.cart.model.CartItem;
+import com.glowtique.glowtique.cart.repository.CartItemRepository;
 import com.glowtique.glowtique.cart.repository.CartRepository;
 import com.glowtique.glowtique.exception.CartNotExisting;
 import com.glowtique.glowtique.exception.ProductNotfoundException;
@@ -26,12 +27,14 @@ public class CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final CartItemRepository cartItemRepository;
 
     @Autowired
-    public CartService(CartRepository cartRepository, ProductRepository productRepository, UserRepository userRepository) {
+    public CartService(CartRepository cartRepository, ProductRepository productRepository, UserRepository userRepository, CartItemRepository cartItemRepository) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.cartItemRepository = cartItemRepository;
     }
 
     public Cart createCart(User user) {
@@ -88,5 +91,33 @@ public class CartService {
                 .map(CartItem::getTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         cart.setTotalPrice(totalPrice);
+    }
+    @Transactional
+    public Cart removeItemFromCart(UUID userId, UUID productId) {
+        Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new CartNotExisting("Cart not found"));
+        CartItem cartItem = cart.getCartItems().stream()
+                .filter(i -> i.getProduct().getId().equals(productId))
+                .findFirst().orElseThrow(() -> new CartNotExisting("Product not found in the cart"));
+
+        cart.getCartItems().remove(cartItem);
+        cartItemRepository.delete(cartItem);
+
+        updateTotalPrice(cart);
+        return cartRepository.save(cart);
+    }
+    @Transactional
+    public Cart updateQuantity(UUID userId, UUID productId, int quantity) {
+        Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new CartNotExisting("Cart not found"));
+        CartItem cartItem = cart.getCartItems().stream()
+                .filter(i -> i.getProduct().getId().equals(productId))
+                .findFirst().orElseThrow(() -> new CartNotExisting("Product not found in the cart"));
+        if (quantity > 0) {
+            cartItem.setQuantity(quantity);
+        } else {
+            cart.getCartItems().remove(cartItem);
+            cartItemRepository.delete(cartItem);
+        }
+        updateTotalPrice(cart);
+        return cartRepository.save(cart);
     }
 }
