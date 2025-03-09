@@ -95,12 +95,15 @@ public class CartService {
     @Transactional
     public Cart removeItemFromCart(UUID userId, UUID productId) {
         Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new CartNotExisting("Cart not found"));
-        CartItem cartItem = cart.getCartItems().stream()
-                .filter(i -> i.getProduct().getId().equals(productId))
-                .findFirst().orElseThrow(() -> new CartNotExisting("Product not found in the cart"));
 
-        cart.getCartItems().remove(cartItem);
-        cartItemRepository.delete(cartItem);
+        CartItem cartItemToRemove = cart.getCartItems().stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new ProductNotfoundException("Product not found in cart"));
+
+        cart.getCartItems().remove(cartItemToRemove);
+
+        cartItemRepository.delete(cartItemToRemove);
 
         updateTotalPrice(cart);
         return cartRepository.save(cart);

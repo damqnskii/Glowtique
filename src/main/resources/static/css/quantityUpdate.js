@@ -3,8 +3,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const minusBtn = container.querySelector(".minus");
         const plusBtn = container.querySelector(".plus");
         const quantityInput = container.querySelector(".input-box");
+        const cartItem = quantityInput.closest(".cart-item");
+        if (!cartItem) return;
 
-        const productId = quantityInput.closest(".cart-item").getAttribute("data-product-id");
+        const productId = cartItem.getAttribute("data-product-id");
+        const totalPriceContainer = document.querySelector(".total-price");
+
+        if (!productId) return;
 
         async function updateQuantity(newQuantity) {
             try {
@@ -18,7 +23,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (response.ok) {
                     const data = await response.json();
                     quantityInput.value = newQuantity;
-                    document.querySelector(".total-price").innerHTML = `Крайна цена с ДДС: <strong>${data.totalPrice} лв.</strong>`; // Update total price
+
+                    if (totalPriceContainer) {
+                        let formattedPrice = parseFloat(data.totalPrice).toFixed(2);
+                        totalPriceContainer.innerHTML = `Крайна цена с ДДС: <strong>${formattedPrice} лв.</strong>`;
+                    }
+                } else if (response.status === 401) {
+                    alert("You must be logged in to update the cart.");
                 } else {
                     alert("Failed to update quantity.");
                 }
@@ -45,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         quantityInput.addEventListener("change", function () {
             let newQuantity = parseInt(quantityInput.value);
-            if (newQuantity < 1) {
+            if (isNaN(newQuantity) || newQuantity < 1) {
                 newQuantity = 1;
             } else if (newQuantity > 10) {
                 newQuantity = 10;

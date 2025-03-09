@@ -17,11 +17,11 @@
                 <p><span class="highlight">Безплатна доставка при над 200 лв. поръчка</span></p>
             </div>
 
-            <div th:if="${user.cart.getCartItems().size() <= 0}">
+            <div th:if="${user.cart.getCartItems().size() == 0}">
                 <div class="empty-cart">Нямате добавени продукти в кошницата </div>
             </div>
-            <div th:each="item : ${cart.cartItems}" class="cart-item">
-                <a th:href="@{/product/{id}(id=${item.product.id})}"><img th:src="${item.product.image}" alt="Product 1"></a>
+            <div th:each="item : ${cart.cartItems}" class="cart-item" th:attr="data-product-id=${item.product.id}">
+                <a th:href="@{/product/{id}(id=${item.product.id})}"><img th:src="${item.product.image}" alt="Product Image"></a>
                 <div class="item-details">
                     <a class="product-link" th:href="@{/product/{id}(id=${item.product.id})}"><p th:text="${item.product.name}"><strong></strong></p></a>
                     <p th:text="${item.product.description}"></p>
@@ -36,8 +36,9 @@
                         <button class="plus" aria-label="Increase">&plus;</button>
                     </div>
                 </form>
-                <form th:action="@{/cart/remove/{productId}(productId=${item.product.id})}" th:method="Post">
+                <form th:action="@{/cart/remove/{productId}(productId=${item.product.id})}" th:method="POST">
                     <div class="remove-item">
+                        <input type="hidden" name="productId" th:value="${item.product.id}">
                         <button type="submit" class="remove"><span>×</span></button>
                     </div>
                 </form>

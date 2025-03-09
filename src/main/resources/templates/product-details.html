@@ -33,12 +33,12 @@
                 </div>
                 <p th:text="${product.price} + ' лв.'" class="price"></p>
                 <p th:text="'Brand: ' + ${product.brand.name}" class="brand"></p>
+                    <div class="quantity">
+                        <button class="minus" aria-label="Decrease">&minus;</button>
+                        <input type="number" class="input-box" value="1" min="1" max="10">
+                        <button class="plus" aria-label="Increase">&plus;</button>
+                    </div>
 
-                <div class="quantity">
-                    <button class="minus" aria-label="Decrease">&minus;</button>
-                    <input type="number" class="input-box" value="1" min="1" max="10">
-                    <button class="plus" aria-label="Increase">&plus;</button>
-                </div>
                 <form th:action="@{/cart/add/{productId}(productId=${product.id})}" th:method="Post">
                     <input type="hidden" name="quantity" value="1">
                     <button th:if="${product.quantity > 0}" type="submit" class="add-to-cart" th:data-id="${product.id}">Добави в кошницата</button>
