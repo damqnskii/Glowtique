@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/css/wishlisted.css">
     <link rel="stylesheet" href="/css/toast.css">
 
-    <title>Любими продукти</title>
+    <title>Glowtique | Wishlist</title>
 </head>
 <body>
 <th:block th:insert="fragments/header-fragment :: header"></th:block>
@@ -42,6 +42,10 @@
                 <p>Тук ще намерите вашите любими продукти. Добавете ги към кошницата за лесна поръчка!</p>
             </div>
 
+            <div th:if="${wishlistItems.size() == 0}">
+                <h3 style="text-align: center">Все още нямате харесани продукти.</h3>
+            </div>
+
             <!-- Wishlist Products -->
             <section class="wishlist">
 
@@ -64,7 +68,11 @@
                         <div class="product-details">
                             <p th:text="${item.price} +  ' лв.'" class="price"></p>
                         </div>
-                        <button class="add-to-cart" th:data-id="${item.id} ">Добави в кошницата</button>
+                        <form th:action="@{/cart/add/{productId}(productId=${item.id})}" th:method="Post">
+                            <input type="hidden" name="quantity" value="1">
+                            <button th:if="${item.quantity > 0}" type="submit" class="add-to-cart" th:data-id="${item.id}">Добави в кошницата</button>
+                            <button th:unless="${item.quantity > 0}" disabled type="submit" class="add-to-cart" th:data-id="${item.id}">Добави в кошницата</button>
+                        </form>
                     </div>
                 </div>
             </section>

@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.UUID;
 
 @Controller
-@RequestMapping
 public class UserController {
     private final UserService userService;
     private final WishlistItemService wishlistItemService;
@@ -40,23 +39,15 @@ public class UserController {
         this.wishlistItemService = wishlistItemService;
     }
 
-
-    @GetMapping("/users")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ModelAndView getAllUsers(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+    @GetMapping("/admin-dashboard")
+    public ModelAndView getAdminDashboard() {
         List<User> users = userService.getAllUsers();
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("users");
         modelAndView.addObject("users", users);
-
         return modelAndView;
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @GetMapping("/admin-dashboard")
-    public ModelAndView getAdminDashboard() {
-        return new ModelAndView("admin-dashboard");
     }
 
     @GetMapping("/profile")
@@ -72,6 +63,10 @@ public class UserController {
 
     @GetMapping("/edit-profile")
     public ModelAndView getEditProfileForm(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        if (authenticationMetadata == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
         User user = userService.getUserById(authenticationMetadata.getUserId());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("edit-profile");
@@ -100,6 +95,11 @@ public class UserController {
     @GetMapping("/wishlist")
     public ModelAndView getWishlist(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         User user = userService.getUserById(authenticationMetadata.getUserId());
+
+        if (user == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
         List<ProductRequest> wishlistItems = wishlistItemService.getWishlistItems(user);
 
         ModelAndView modelAndView = new ModelAndView();

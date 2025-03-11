@@ -60,8 +60,10 @@
                 <p class="total-price">Крайна цена с ДДС: <strong th:text="${cart.totalPrice} + ' лв.'"></strong></p>
             </div>
             <div class="checkout-section">
-                <a th:href="@{redirect:/home}"><button type="submit" class="redirect">Назад към магазина</button></a>
-                <button type="submit" class="checkout-button">Поръчай</button>
+                <button type="submit" class="redirect">Назад към магазина</button>
+                <form th:action="@{/checkout}" th:method="Get">
+                    <button type="submit" class="checkout-button">Към поръчката</button>
+                </form>
             </div>
         </div>
     </main>

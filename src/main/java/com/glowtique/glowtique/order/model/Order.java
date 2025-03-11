@@ -4,6 +4,7 @@ import com.glowtique.glowtique.payment.model.Payment;
 import com.glowtique.glowtique.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.aspectj.weaver.ast.Or;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -30,9 +31,31 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    @Column(nullable = false)
     private BigDecimal totalPrice;
 
+    @Column(nullable = false)
     private String trackingNumber;
+
+    @Column(nullable = false)
+    private String shippingAddress;
+
+    @Column(nullable = false)
+    private String orderPhoneNumber;
+
+    private String officeAddress;
+
+    @Column(nullable = false)
+    private String postalCode;
+
+    @Column(nullable = false)
+    private String town;
+
+    @Enumerated(EnumType.STRING)
+    private OrderMethod orderMethod;
+
+    @Column(length = 750)
+    private String description;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;

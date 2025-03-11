@@ -44,6 +44,10 @@ public class ProductController {
     public ModelAndView getProductPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata, Model model,
                                        @RequestParam(value = "category", required = false) CategoryType category) {
         User user = userService.getUserById(authenticationMetadata.getUserId());
+        if (user == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
         ModelAndView modelAndView = new ModelAndView();
         List<Product> products = (category != null) ? productService.findByCategory(category) : productService.findAll();
 
@@ -63,6 +67,11 @@ public class ProductController {
     public ModelAndView getProductDetails(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata,
                                           @PathVariable UUID id) {
         User user = userService.getUserById(authenticationMetadata.getUserId());
+
+        if (user == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
         Product product = productService.getProductById(id);
         List<Product> productsWithSameName = productService.getProductsByName(product.getName());
 

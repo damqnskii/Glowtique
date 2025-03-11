@@ -34,6 +34,9 @@ public class WishlistController {
     }
     @GetMapping("/wishlist/items")
     public ResponseEntity<List<ProductRequest>> getWishlistItems(@AuthenticationPrincipal User user) {
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         List<ProductRequest> wishlistItems = wishlistItemService.getWishlistItems(user);
         return ResponseEntity.ok(wishlistItems);
     }

@@ -32,6 +32,10 @@ public class CartController {
     }
     @GetMapping("/cart")
     public ModelAndView getCartPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        if (authenticationMetadata == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
         ModelAndView modelAndView = new ModelAndView("cart");
         modelAndView.addObject("user", userService.getUserById(authenticationMetadata.getUserId()));
 

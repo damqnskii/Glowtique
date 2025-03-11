@@ -5,6 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-        dsadadsadad
+    <form th:action="@{/users}" th:method="Get" th:object="${users}">
+        <ul th:each="user : ${users}">
+           <li th:text="${user.firstName}"></li>
+           <li th:text="${user.lastName}"></li>
+           <li th:text="${user.email}"></li>
+           <li th:text="${user.phoneNumber}"></li>
+        </ul>
+    </form>
 </body>
 </html>

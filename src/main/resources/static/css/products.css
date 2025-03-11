@@ -241,6 +241,8 @@ h2 span {
     color: gray;
     cursor: pointer;
     padding: 0;
+    position: absolute;
+    top: 15px;
 }
 
 .remove-side:hover {
