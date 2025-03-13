@@ -3,6 +3,7 @@ package com.glowtique.glowtique.web;
 import com.glowtique.glowtique.security.AuthenticationMetadata;
 import com.glowtique.glowtique.user.model.CustomUserDetailsService;
 import com.glowtique.glowtique.user.service.UserService;
+import com.glowtique.glowtique.web.dto.AdminRequest;
 import com.glowtique.glowtique.web.dto.EditProfileRequest;
 import com.glowtique.glowtique.web.dto.ProductRequest;
 import com.glowtique.glowtique.web.mapper.DtoMapper;
@@ -16,10 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import com.glowtique.glowtique.user.model.User;
 
@@ -45,9 +43,16 @@ public class UserController {
         List<User> users = userService.getAllUsers();
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("users");
+        modelAndView.setViewName("admin-dashboard");
         modelAndView.addObject("users", users);
+        modelAndView.addObject("adminRequest", new AdminRequest());
         return modelAndView;
+    }
+
+    @PutMapping("/admin-dashboard/edit/{id}")
+    public String editRole(@PathVariable UUID id, @ModelAttribute AdminRequest adminRequest) {
+        userService.updateRole(adminRequest, id);
+        return "redirect:/admin-dashboard";
     }
 
     @GetMapping("/profile")

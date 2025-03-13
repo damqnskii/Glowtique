@@ -7,6 +7,7 @@ import com.glowtique.glowtique.exception.ExistingPhoneNumber;
 import com.glowtique.glowtique.exception.UserNotExisting;
 import com.glowtique.glowtique.user.model.UserRole;
 import com.glowtique.glowtique.user.repository.UserRepository;
+import com.glowtique.glowtique.web.dto.AdminRequest;
 import com.glowtique.glowtique.web.dto.EditProfileRequest;
 import com.glowtique.glowtique.web.dto.LoginRequest;
 import com.glowtique.glowtique.web.dto.RegisterRequest;
@@ -121,5 +122,14 @@ public class UserService {
         user.setUpdatedAt(LocalDateTime.now());
 
         return userRepository.save(user);
+    }
+
+
+    public void updateRole(AdminRequest adminRequest, UUID userId) {
+        User user = getUserById(userId);
+
+        user.setRole(adminRequest.getRole());
+
+        userRepository.save(user);
     }
 }
