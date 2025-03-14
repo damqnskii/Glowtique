@@ -3,11 +3,13 @@ package com.glowtique.glowtique.order.service;
 import com.glowtique.glowtique.cart.model.Cart;
 import com.glowtique.glowtique.cart.repository.CartItemRepository;
 import com.glowtique.glowtique.cart.repository.CartRepository;
+import com.glowtique.glowtique.exception.CartNotExisting;
 import com.glowtique.glowtique.order.model.Order;
 import com.glowtique.glowtique.order.model.OrderItem;
 import com.glowtique.glowtique.order.model.OrderStatus;
 import com.glowtique.glowtique.order.repository.OrderItemRepository;
 import com.glowtique.glowtique.order.repository.OrderRepository;
+import com.glowtique.glowtique.payment.model.PaymentMethod;
 import com.glowtique.glowtique.web.dto.OrderRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -15,9 +17,7 @@ import com.glowtique.glowtique.user.model.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -93,12 +93,18 @@ public class OrderService {
 
         orderRepository.save(order);
 
-        cart.getCartItems().clear();
-        cart.setTotalPrice(BigDecimal.ZERO);
-        cartItemRepository.deleteCartItemByCart(cart);
-
-        cartRepository.save(cart);
-
         return order;
+    }
+
+    public Order getCurrentOrder(UUID userId) {
+        Optional<Order> currentOrder = orderRepository.getLastOrderByUserId(userId);
+        if (currentOrder.isEmpty()) {
+            throw new CartNotExisting("There are not added products to the order!");
+        }
+        return currentOrder.get();
+    }
+    public void completeOrder(User user) {
+        Order order = getCurrentOrder(user.getId());
+        order.setOrderStatus(OrderStatus.ORDER_CONFIRMED);
     }
 }

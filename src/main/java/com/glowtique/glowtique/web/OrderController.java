@@ -76,8 +76,20 @@ public class OrderController {
 
         orderService.createOrder(orderRequest, user, cart);
 
-        return new ModelAndView("/payment");
+        return new ModelAndView("redirect:/payment");
 
+    }
+
+    @GetMapping("/orders")
+    public ModelAndView getOrders(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        User user = userService.getUserById(authenticationMetadata.getUserId());
+        if (user == null) {
+            return new ModelAndView("redirect:/login");
+        }
+        ModelAndView modelAndView = new ModelAndView("orders");
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("orders", user.getOrders());
+        return modelAndView;
     }
 
 }

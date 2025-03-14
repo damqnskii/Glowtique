@@ -20,7 +20,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf ->
                         csrf.ignoringRequestMatchers("/wishlist/**")
-                                .ignoringRequestMatchers("/cart/**"))
+                                .ignoringRequestMatchers("/cart/**")
+                                .ignoringRequestMatchers("/payment/**"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin-dashboard").hasRole("ADMIN")
                         .requestMatchers("/", "/register", "/login").permitAll()

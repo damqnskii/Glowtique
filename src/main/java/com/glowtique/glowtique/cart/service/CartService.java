@@ -123,4 +123,13 @@ public class CartService {
         updateTotalPrice(cart);
         return cartRepository.save(cart);
     }
+    public void clearCart(User user) {
+        Cart cart = user.getCart();
+        if (cart != null && cart.getCartItems() != null) {
+            cartItemRepository.deleteAll(cart.getCartItems());
+            cart.getCartItems().clear();
+        }
+        cart.setTotalPrice(BigDecimal.ZERO);
+        cartRepository.save(cart);
+    }
 }

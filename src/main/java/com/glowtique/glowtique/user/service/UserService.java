@@ -5,6 +5,7 @@ import com.glowtique.glowtique.cart.service.CartService;
 import com.glowtique.glowtique.exception.AlreadyRegEmailException;
 import com.glowtique.glowtique.exception.ExistingPhoneNumber;
 import com.glowtique.glowtique.exception.UserNotExisting;
+import com.glowtique.glowtique.user.model.Country;
 import com.glowtique.glowtique.user.model.UserRole;
 import com.glowtique.glowtique.user.repository.UserRepository;
 import com.glowtique.glowtique.web.dto.AdminRequest;
@@ -82,7 +83,7 @@ public class UserService {
                 .updatedAt(LocalDateTime.now())
                 .town(null)
                 .street(null)
-                .country(null)
+                .country(Country.BULGARIA)
                 .orders(new HashSet<>())
                 .wishlistItems(new HashSet<>())
                 .isActive(true)

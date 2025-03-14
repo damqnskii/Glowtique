@@ -4,6 +4,7 @@ import com.glowtique.glowtique.order.model.Order;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -25,5 +26,9 @@ public class Payment {
 
     private String transactionId;
 
-    private String paymentMethod;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
 }
