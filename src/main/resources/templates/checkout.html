@@ -149,7 +149,7 @@
                             <p th:if="${cart.totalPrice >= 200}" class="total-price-delivery-free">Безплатна доставка</p>
                             <p th:unless="${cart.totalPrice >= 200}" class="total-price-delivery">Доставка в цената</p>
                         </div>
-                        <div>
+                        <div class="additional-info">
                             <label for="">Коментар към поръчката</label>
                             <textarea th:field="*{description}" name="description" id="" cols="4" rows="50"></textarea>
                         </div>
@@ -159,6 +159,9 @@
                             <button type="submit" class="payment-button">Плащане</button>
                         </div>
                         </form>
+                        <p class="alert-warning" style="text-align: center; font-size: 16px"
+                           th:if="${notEnoughProductStockMessage}"
+                           th:text="${notEnoughProductStockMessage}"></p>
                     </div>
 
                 </div>

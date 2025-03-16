@@ -1,15 +1,18 @@
 package com.glowtique.glowtique.order.service;
 
 import com.glowtique.glowtique.cart.model.Cart;
+import com.glowtique.glowtique.cart.model.CartItem;
 import com.glowtique.glowtique.cart.repository.CartItemRepository;
 import com.glowtique.glowtique.cart.repository.CartRepository;
 import com.glowtique.glowtique.exception.CartNotExisting;
+import com.glowtique.glowtique.exception.NotEnoughProductStock;
 import com.glowtique.glowtique.order.model.Order;
 import com.glowtique.glowtique.order.model.OrderItem;
 import com.glowtique.glowtique.order.model.OrderStatus;
 import com.glowtique.glowtique.order.repository.OrderItemRepository;
 import com.glowtique.glowtique.order.repository.OrderRepository;
-import com.glowtique.glowtique.payment.model.PaymentMethod;
+import com.glowtique.glowtique.product.model.Product;
+import com.glowtique.glowtique.product.repository.ProductRepository;
 import com.glowtique.glowtique.web.dto.OrderRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -18,8 +21,6 @@ import com.glowtique.glowtique.user.model.User;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -27,12 +28,14 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final ProductRepository productRepository;
 
-    public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository, CartRepository cartRepository, CartItemRepository cartItemRepository) {
+    public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository, CartRepository cartRepository, CartItemRepository cartItemRepository, ProductRepository productRepository) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
+        this.productRepository = productRepository;
     }
     private String customTrackingNumber(String firstName, String lastName) {
         final Random random = new Random();
@@ -55,6 +58,12 @@ public class OrderService {
 
     @Transactional
     public Order createOrder(OrderRequest orderRequest, User user, Cart cart) {
+
+        for (CartItem item : cart.getCartItems()) {
+            if (item.getQuantity() > item.getProduct().getQuantity()) {
+                throw new NotEnoughProductStock("Не е налично количеството от продукта " + item.getProduct().getName() + " !");
+            }
+        }
 
         List<OrderItem> orderItems = cart.getCartItems().stream().map(cartItem -> {
             return OrderItem.builder()
@@ -91,6 +100,7 @@ public class OrderService {
 
         orderItems.forEach(orderItem -> orderItem.setOrder(order));
 
+        orderItemRepository.saveAll(orderItems);
         orderRepository.save(order);
 
         return order;
@@ -99,12 +109,23 @@ public class OrderService {
     public Order getCurrentOrder(UUID userId) {
         Optional<Order> currentOrder = orderRepository.getLastOrderByUserId(userId);
         if (currentOrder.isEmpty()) {
-            throw new CartNotExisting("There are not added products to the order!");
+            throw new CartNotExisting("Кошницата е празна!");
         }
         return currentOrder.get();
     }
     public void completeOrder(User user) {
         Order order = getCurrentOrder(user.getId());
+        for (OrderItem item : order.getOrderItems()) {
+            Product product = item.getProduct();
+            int newQuantity = product.getQuantity() - item.getQuantity();
+
+            if (newQuantity < 0) {
+                throw new NotEnoughProductStock("Няма достатъчно количество от продукта " + item.getProduct().getName() + " !");
+            }
+            product.setQuantity(newQuantity);
+            productRepository.save(product);
+        }
+
         order.setOrderStatus(OrderStatus.ORDER_CONFIRMED);
     }
 }

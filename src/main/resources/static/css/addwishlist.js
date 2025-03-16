@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
             wishlistItems.forEach(item => {
                 let button = document.querySelector(`.wishlist-btn[data-id="${item.id}"]`);
                 if (button) {
-                    button.classList.add("active"); // Add 'active' class for liked state
+                    button.classList.add("active");
                     button.classList.add("wishlist-btn-liked");
                 }
             });
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function toggleWishlist(button) {
     const productId = button.getAttribute("data-id");
-    const csrfToken = document.querySelector("meta[name='_csrf']")?.getAttribute("content") || ""; // Get CSRF token if available
+    const csrfToken = document.querySelector("meta[name='_csrf']")?.getAttribute("content") || "";
 
 
     fetch(`/wishlist/add/${productId}`, {
@@ -70,12 +70,11 @@ function toggleWishlist(button) {
         const toastMessage = document.getElementById("toast-message");
 
         toastMessage.textContent = message;
-        toast.style.backgroundColor = isError ? '#e74c3c' : '#333'; // Red for error, default for success
+        toast.style.backgroundColor = isError ? '#e74c3c' : '#333';
 
         toast.classList.add("show");
         toast.classList.remove("hidden");
 
-        // Automatically hide the toast after 3 seconds
         setTimeout(() => {
             toast.classList.remove("show");
             toast.classList.add("hidden");

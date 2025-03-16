@@ -199,8 +199,15 @@ input {
     margin-top: 5px;
     font-size: 14px;
 }
-textarea {
-    margin-top: 20px;
-    width: 420px;
+.additional-info {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    padding: 10px;
+
+}
+.additional-info textarea {
+    width: 100%;
     height: 100px;
+    margin-top: 1rem;
 }

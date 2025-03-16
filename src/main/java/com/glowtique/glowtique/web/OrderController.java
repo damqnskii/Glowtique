@@ -36,15 +36,16 @@ public class OrderController {
     @GetMapping("/checkout")
     public ModelAndView getOrder(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        User user = userService.getUserById(authenticationMetadata.getUserId());
-
-        if (user == null) {
+        if (authenticationMetadata == null) {
             return new ModelAndView("redirect:/login");
         }
+
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         ModelAndView modelAndView = new ModelAndView("checkout");
         modelAndView.addObject("user", user);
         Cart cart = user.getCart();
         modelAndView.addObject("cart", cart);
+
         List<CartItem> cartItems = cart.getCartItems();
         modelAndView.addObject("cartItems", cartItems);
         modelAndView.addObject("orderRequest", new OrderRequest());
@@ -82,10 +83,10 @@ public class OrderController {
 
     @GetMapping("/orders")
     public ModelAndView getOrders(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-        User user = userService.getUserById(authenticationMetadata.getUserId());
-        if (user == null) {
+        if (authenticationMetadata == null) {
             return new ModelAndView("redirect:/login");
         }
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         ModelAndView modelAndView = new ModelAndView("orders");
         modelAndView.addObject("user", user);
         modelAndView.addObject("orders", user.getOrders());

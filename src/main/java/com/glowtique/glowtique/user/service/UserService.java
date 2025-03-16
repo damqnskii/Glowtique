@@ -4,6 +4,7 @@ import com.glowtique.glowtique.cart.model.Cart;
 import com.glowtique.glowtique.cart.service.CartService;
 import com.glowtique.glowtique.exception.AlreadyRegEmailException;
 import com.glowtique.glowtique.exception.ExistingPhoneNumber;
+import com.glowtique.glowtique.exception.UnchangeableEmailException;
 import com.glowtique.glowtique.exception.UserNotExisting;
 import com.glowtique.glowtique.user.model.Country;
 import com.glowtique.glowtique.user.model.UserRole;
@@ -40,6 +41,7 @@ public class UserService {
 
     public User getUserById(UUID id) {
         return userRepository.findById(id).orElseThrow(() -> new UserNotExisting("User not found"));
+
     }
 
 
@@ -47,12 +49,12 @@ public class UserService {
         Optional<User> optionalUser = userRepository.findUserByEmail(loginRequest.getEmail());
 
         if (optionalUser.isEmpty()) {
-            throw new RuntimeException("User not found");
+            throw new UserNotExisting("User not found");
         }
         User user = optionalUser.get();
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Wrong password");
+            throw new RuntimeException("Wrong logging details");
         }
 
         return user;
@@ -64,7 +66,7 @@ public class UserService {
         Optional<User> optionalUser = userRepository.findUserByEmail(registerRequest.getEmail());
 
         if (optionalUser.isPresent()) {
-            throw new RuntimeException("User already exists");
+            throw new AlreadyRegEmailException("Email already exists");
         }
         if (!registerRequest.password.equals(registerRequest.confirmPassword)) {
             throw new RuntimeException("Password does not match");
@@ -104,11 +106,11 @@ public class UserService {
         Optional<User> isFigured = userRepository.findUserByEmail(editProfileRequest.getEmail());
 
         if (isFigured.isPresent() && !isFigured.get().getId().equals(userId)) {
-            throw new AlreadyRegEmailException("The email address already exists");
+            throw new UnchangeableEmailException("Имейл адресът вече съшествува!");
         }
         Optional<User> isNumberRegistered = userRepository.findUserByPhoneNumber(editProfileRequest.getPhoneNumber());
         if (isNumberRegistered.isPresent() && !isNumberRegistered.get().getId().equals(userId)) {
-            throw new ExistingPhoneNumber("The phone number already exists");
+            throw new ExistingPhoneNumber("Телефонният номер вече е регистриран!");
         }
 
         user.setEmail(editProfileRequest.getEmail());

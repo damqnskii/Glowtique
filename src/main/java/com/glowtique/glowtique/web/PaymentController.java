@@ -27,10 +27,11 @@ public class PaymentController {
 
     @GetMapping("/payment")
     public ModelAndView getPaymentProcessing(@AuthenticationPrincipal AuthenticationMetadata  authenticationMetadata) {
-        User user = userService.getUserById(authenticationMetadata.getUserId());
-        if (userService.getUserById(authenticationMetadata.getUserId()) == null) {
+        if (authenticationMetadata == null) {
             return new ModelAndView("redirect:/login");
         }
+
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         ModelAndView modelAndView = new ModelAndView("payment");
         modelAndView.addObject("user", user);
         modelAndView.addObject("orderItems", user.getCart().getCartItems());
@@ -44,11 +45,20 @@ public class PaymentController {
                                  @RequestParam(required = false) String cvc,
                                  @RequestParam(required = false) String giftCardNumber,
                                  @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-        User user = userService.getUserById(authenticationMetadata.getUserId());
-        if (userService.getUserById(authenticationMetadata.getUserId()) == null) {
+        if (authenticationMetadata == null) {
             return "redirect:/login";
         }
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         PaymentMethod paymentMethod = PaymentMethod.valueOf(paymentMethodStr);
         return paymentService.processPayment(paymentMethod, cardNumber, expiryDate, cvc, giftCardNumber, user);
+    }
+    @GetMapping("/order-confirmation")
+    public ModelAndView getConfirmationOrder(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        if (authenticationMetadata == null) {
+            return new ModelAndView("redirect:/login");
+        }
+        User user = userService.getUserById(authenticationMetadata.getUserId());
+
+        return new ModelAndView("order-confirmation");
     }
 }

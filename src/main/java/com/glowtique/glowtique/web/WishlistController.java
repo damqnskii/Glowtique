@@ -33,10 +33,11 @@ public class WishlistController {
         this.userService = userService;
     }
     @GetMapping("/wishlist/items")
-    public ResponseEntity<List<ProductRequest>> getWishlistItems(@AuthenticationPrincipal User user) {
-        if (user == null) {
+    public ResponseEntity<List<ProductRequest>> getWishlistItems(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        if (authenticationMetadata == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         List<ProductRequest> wishlistItems = wishlistItemService.getWishlistItems(user);
         return ResponseEntity.ok(wishlistItems);
     }
@@ -47,15 +48,15 @@ public class WishlistController {
                                                              @PathVariable UUID productId,
                                                              @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        User user = userService.getUserById(authenticationMetadata.getUserId());
-        if (user == null) {
+        if (authenticationMetadata == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("message", "Трябва да сте влезли в акаунта си!"));
+                    .body(Map.of("message", "User is not logged in!"));
         }
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         boolean added = wishlistItemService.addToWishlist(productId, user);
         Map<String, Object> response = Map.of(
                 "added", added,
-                "message", added ? "Продуктът е добавен в списъка с желания!" : "Продуктът е премахнат от списъка с желания!"
+                "message", added ? "The product is added successfully" : "The product is removed successfully!"
         );
         return ResponseEntity.ok(response);
     }
@@ -63,6 +64,11 @@ public class WishlistController {
     @PostMapping("/{context}/remove/{productId}")
     public ResponseEntity<Map<String, Object>>  removeFromWishlist(@PathVariable String context,
             @PathVariable UUID productId, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        if (authenticationMetadata == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "User is not logged in!"));
+        }
+
         User user = userService.getUserById(authenticationMetadata.getUserId());
         wishlistItemService.removeFromWishlist(productId, user);
         Map<String, Object> response = new HashMap<>();

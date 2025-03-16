@@ -49,7 +49,7 @@ public class CartController {
     public ModelAndView addItemToCart(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata,
                                               @PathVariable UUID productId,
                                               @RequestParam int quantity) {
-        if (authenticationMetadata == null || authenticationMetadata.getUserId() == null) {
+        if (authenticationMetadata == null) {
             return new ModelAndView("redirect:/login");
         }
         UUID userId = authenticationMetadata.getUserId();
@@ -59,7 +59,7 @@ public class CartController {
     @PostMapping("/cart/remove/{productId}")
     public ModelAndView removeItemFromCart(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata,
                                         @PathVariable UUID productId) {
-        if (authenticationMetadata == null || authenticationMetadata.getUserId() == null) {
+        if (authenticationMetadata == null) {
             return new ModelAndView("redirect:/login");
         }
         UUID userId = authenticationMetadata.getUserId();
@@ -72,11 +72,10 @@ public class CartController {
     public ResponseEntity<Map<String, Object>> updateQuantity(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata,
                                                               @PathVariable UUID productId,
                                                               @RequestParam("quantity") int quantity) {
-        Cart updateCart = cartService.updateQuantity(authenticationMetadata.getUserId(), productId, quantity);
-
         if (authenticationMetadata.getUserId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User is not authenticated!"));
         }
+        Cart updateCart = cartService.updateQuantity(authenticationMetadata.getUserId(), productId, quantity);
 
         Map<String, Object> response = new HashMap<>();
         response.put("totalPrice", updateCart.getTotalPrice());

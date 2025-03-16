@@ -15,23 +15,24 @@
     </header>
     <main>
         <div class="login-container">
-            <h2>Login</h2>
+            <h2>Вход</h2>
             <form th:action="@{/login}" th:method="POST" th:object="${loginRequest}">
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input th:field="*{email}" type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <label for="email">Имейл адрес</label>
+                    <input th:field="*{email}" type="email" id="email" name="email" placeholder="Въведете имейл адрес" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input th:field="*{password}" type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <label for="password">Парола</label>
+                    <input th:field="*{password}" type="password" id="password" name="password" placeholder="Въведете парола" required>
                 </div>
                 <button type="submit" class="login-button">Login</button>
+                <p class="alert-warning" th:if="${errorMessage}" th:text="${errorMessage}"></p>
             </form>
             <div class="forgot-password">
-                <a href="">Forgot your password?</a>
-                <a th:href="@{/register}">Create an account</a>
+                <a href="">Забравили сте си паролата?</a>
+                <a th:href="@{/register}">Създадете профил</a>
             </div>
-            <p class="alert-warning" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+
         </div>
     </main>
 </body>

@@ -53,7 +53,7 @@ public class CartService {
 
         Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new CartNotExisting("Cart not found"));
 
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotfoundException("Product with " + productId.toString() + " not found"));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotfoundException("Product with " + productId + " not found"));
         CartItem existingCartItem = getCartItem(cart, product);
 
         if (existingCartItem != null) {

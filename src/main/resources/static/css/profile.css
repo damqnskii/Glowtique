@@ -90,7 +90,6 @@ h2 {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Sidebar */
 .sidebar {
         width: 250px;
         padding: 20px;
@@ -142,7 +141,6 @@ h2 {
     margin-bottom: 15px;
 }
 
-/* Banner */
 .banner {
     background: #e0f7fa;
     padding: 15px;
@@ -151,7 +149,6 @@ h2 {
     margin-bottom: 20px;
 }
 
-/* Profile Info */
 .profile-info {
     margin-bottom: 20px;
 }

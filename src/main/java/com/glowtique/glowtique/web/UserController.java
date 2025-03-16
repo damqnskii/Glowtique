@@ -57,6 +57,9 @@ public class UserController {
 
     @GetMapping("/profile")
     public ModelAndView getProfileMenu(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        if (authenticationMetadata == null) {
+            return new ModelAndView("redirect:/login");
+        }
         User user = userService.getUserById(authenticationMetadata.getUserId());
 
         ModelAndView modelAndView = new ModelAndView();
@@ -99,11 +102,11 @@ public class UserController {
     }
     @GetMapping("/wishlist")
     public ModelAndView getWishlist(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-        User user = userService.getUserById(authenticationMetadata.getUserId());
 
-        if (user == null) {
+        if (authenticationMetadata == null) {
             return new ModelAndView("redirect:/login");
         }
+        User user = userService.getUserById(authenticationMetadata.getUserId());
 
         List<ProductRequest> wishlistItems = wishlistItemService.getWishlistItems(user);
 
@@ -112,6 +115,13 @@ public class UserController {
         modelAndView.addObject("wishlistItems", wishlistItems);
         modelAndView.addObject("user", user);
         return modelAndView;
+    }
+    @GetMapping("/loyalty-points")
+    public ModelAndView getLoyaltyPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        if (authenticationMetadata == null) {
+            return new ModelAndView("redirect:/login");
+        }
+        return new ModelAndView("loyalty-points");
     }
 
 }

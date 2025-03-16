@@ -33,8 +33,10 @@ public class IndexController {
 
 
     @GetMapping("/home")
-    public ModelAndView getHomePage() {
-
+    public ModelAndView getHomePage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        if (authenticationMetadata == null) {
+            return new ModelAndView("redirect:/login");
+        }
         return new ModelAndView("home");
     }
 
@@ -46,9 +48,8 @@ public class IndexController {
         modelAndView.addObject("loginRequest", new LoginRequest());
 
         if (errorParam != null) {
-            modelAndView.addObject("errorMessage", "Incorrect username or password!");
+            modelAndView.addObject("errorMessage", "Неправилен имейл или парола");
         }
-
         return modelAndView;
     }
 
@@ -65,7 +66,7 @@ public class IndexController {
     @PostMapping("/register")
     public ModelAndView registerNewUser(@Valid RegisterRequest registerRequest, BindingResult bindingResult) {
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
-            bindingResult.rejectValue("confirmPassword", "error.registerRequest", "Passwords do not match!");
+            bindingResult.rejectValue("confirmPassword", "error.registerRequest", "Паролите не съвпадат!");
         }
         if (bindingResult.hasErrors()) {
             return new ModelAndView("register");

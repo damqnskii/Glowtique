@@ -1,10 +1,14 @@
 package com.glowtique.glowtique.payment.service;
 
 import com.glowtique.glowtique.cart.service.CartService;
+import com.glowtique.glowtique.order.model.Order;
+import com.glowtique.glowtique.order.model.OrderItem;
 import com.glowtique.glowtique.order.service.OrderService;
 import com.glowtique.glowtique.payment.model.Payment;
 import com.glowtique.glowtique.payment.model.PaymentMethod;
 import com.glowtique.glowtique.payment.model.PaymentStatus;
+import com.glowtique.glowtique.product.model.Product;
+import com.glowtique.glowtique.product.repository.ProductRepository;
 import com.glowtique.glowtique.user.repository.UserRepository;
 import com.glowtique.glowtique.user.service.UserService;
 import jakarta.transaction.Transactional;
@@ -15,6 +19,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class PaymentService {
@@ -22,12 +27,14 @@ public class PaymentService {
     private final OrderService orderService;
     private final CartService cartService;
     private final UserRepository userRepository;
+    private final ProductRepository productRepository;
 
-    public PaymentService(UserService userService, OrderService orderService, CartService cartService, UserRepository userRepository) {
+    public PaymentService(UserService userService, OrderService orderService, CartService cartService, UserRepository userRepository, ProductRepository productRepository) {
         this.userService = userService;
         this.orderService = orderService;
         this.cartService = cartService;
         this.userRepository = userRepository;
+        this.productRepository = productRepository;
     }
     @Transactional
     public String processPayment(PaymentMethod paymentMethod, String cardNumber,
@@ -55,10 +62,11 @@ public class PaymentService {
         BigDecimal obtainedAmount = totalPrice.divide(BigDecimal.valueOf(10.0)).round(new MathContext(0, RoundingMode.CEILING));
         user.setLoyaltyPoints(obtainedAmount.intValue() + currentLoyaltyPoints);
 
+
         userRepository.save(user);
         orderService.completeOrder(user);
         cartService.clearCart(user);
-        return "redirect:/order-confirmation";
+        return "order-confirmation";
     }
 
 }

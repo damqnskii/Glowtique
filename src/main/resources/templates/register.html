@@ -13,7 +13,7 @@
 </header>
 <main>
     <div class="registration-container">
-        <h2>Register</h2>
+        <h2>Регистрация</h2>
         <form th:action="@{/register}" th:method="POST" th:object="${registerRequest}">
             <div class="form-group">
                 <label for="firstname">Име</label>
@@ -29,6 +29,7 @@
                 <label for="email">Email</label>
                 <input th:field="*{email}" type="email" id="email" name="email" placeholder="Въведете имейл" required>
                 <p class="alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                <p class="alert-warning" th:if="${alreadyRegisteredEmailMessage}" th:text="${alreadyRegisteredEmailMessage}"></p>
             </div>
             <div class="form-group">
                 <label for="gender">Пол</label>
@@ -59,7 +60,7 @@
 
             <button type="submit" class="register-button">Register</button>
             <div class="already-registered">
-                <a th:href="@{/login}">Already registered?</a>
+                <a th:href="@{/login}">Вече имате регистрация?</a>
             </div>
         </form>
     </div>
