@@ -22,7 +22,7 @@
         <li><a href="#">Моите промокодове</a></li>
         <li><a href="#">Моите адреси</a></li>
         <li><a th:href="@{/edit-profile}">Настройки на профила</a></li>
-        <li><a href="#">Данни за фактури</a></li>
+        <li><a th:href="@{/notifications}">Нотификации</a></li>
         <li><a href="#">Beauty Card</a></li>
         <li><a href="#">Управление на лични данни</a></li>
         <li><a th:href="@{/logout}">Изход</a></li>
@@ -61,6 +61,8 @@
                 th:text="'Върната'"></td>
           <td   th:if="${order.orderStatus.name() == 'PENDING'}"
                 th:text="'Чакаща одобрение'"></td>
+          <td   th:if="${order.orderStatus.name() == 'AWAITING_PICKUP'}"
+                th:text="'В очакване на вземане'"></td>
 
           <td   th:if="${order.payment.paymentMethod.name() == 'CASH'}"
                   th:text="'Наложен платеж'"></td>

@@ -17,8 +17,7 @@ public class OrderRequest {
     private String firstName;
     private String lastName;
 
-    @Pattern(regexp = "^\\+?[0-9]*$", message = "Телефонният номер трябва да съдържа само цифри.")
-    @NotBlank(message = "Въведете телефонен номер !")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Въведете валиден телефонен номер !")
     private String phoneNumber;
     @NotBlank(message = "Въведете личен адрес !")
     private String shippingAddress;

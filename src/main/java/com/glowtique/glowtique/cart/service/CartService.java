@@ -9,9 +9,7 @@ import com.glowtique.glowtique.exception.ProductNotfoundException;
 import com.glowtique.glowtique.exception.UserNotExisting;
 import com.glowtique.glowtique.product.model.Product;
 import com.glowtique.glowtique.product.repository.ProductRepository;
-import com.glowtique.glowtique.product.service.ProductService;
 import com.glowtique.glowtique.user.repository.UserRepository;
-import com.glowtique.glowtique.user.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +17,6 @@ import com.glowtique.glowtique.user.model.User;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Service

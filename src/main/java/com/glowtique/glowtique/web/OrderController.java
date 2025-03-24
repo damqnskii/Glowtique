@@ -89,7 +89,7 @@ public class OrderController {
         User user = userService.getUserById(authenticationMetadata.getUserId());
         ModelAndView modelAndView = new ModelAndView("orders");
         modelAndView.addObject("user", user);
-        modelAndView.addObject("orders", user.getOrders());
+        modelAndView.addObject("orders", userService.getConfirmedOrders(user));
         return modelAndView;
     }
 

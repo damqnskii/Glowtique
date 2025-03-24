@@ -128,4 +128,14 @@ public class OrderService {
 
         order.setOrderStatus(OrderStatus.ORDER_CONFIRMED);
     }
+
+    public List<Order> allConfirmedOrdersBeforeTwoDays() {
+        LocalDateTime twoDaysAgo = LocalDateTime.now().minusDays(2);
+        return orderRepository.getAllOrderByOrderStatusAndOrderDateBefore(OrderStatus.ORDER_CONFIRMED, twoDaysAgo);
+    }
+    public List<Order> allDeliveredOrdersBefore30min() {
+        LocalDateTime thirtyMinutesAgo = LocalDateTime.now().minusMinutes(30);
+        return orderRepository.getAllOrderByOrderStatusAndOrderDateBefore(OrderStatus.DELIVERED, thirtyMinutesAgo);
+    }
+
 }

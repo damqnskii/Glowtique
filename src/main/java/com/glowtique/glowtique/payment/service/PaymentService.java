@@ -1,13 +1,10 @@
 package com.glowtique.glowtique.payment.service;
 
 import com.glowtique.glowtique.cart.service.CartService;
-import com.glowtique.glowtique.order.model.Order;
-import com.glowtique.glowtique.order.model.OrderItem;
 import com.glowtique.glowtique.order.service.OrderService;
 import com.glowtique.glowtique.payment.model.Payment;
 import com.glowtique.glowtique.payment.model.PaymentMethod;
 import com.glowtique.glowtique.payment.model.PaymentStatus;
-import com.glowtique.glowtique.product.model.Product;
 import com.glowtique.glowtique.product.repository.ProductRepository;
 import com.glowtique.glowtique.user.repository.UserRepository;
 import com.glowtique.glowtique.user.service.UserService;
@@ -19,7 +16,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PaymentService {
@@ -52,21 +49,25 @@ public class PaymentService {
         orderService.getCurrentOrder(user.getId()).setPayment(Payment.builder()
                         .order(orderService.getCurrentOrder(user.getId()))
                         .status(PaymentStatus.COMPLETED)
-                        .transactionId("XXXXXX")
+                        .transactionId(UUID.randomUUID().toString())
                         .createdAt(LocalDateTime.now())
                         .paymentMethod(PaymentMethod.CASH)
                 .build());
 
-        BigDecimal totalPrice = orderService.getCurrentOrder(user.getId()).getTotalPrice();
-        int currentLoyaltyPoints = user.getLoyaltyPoints();
-        BigDecimal obtainedAmount = totalPrice.divide(BigDecimal.valueOf(10.0)).round(new MathContext(0, RoundingMode.CEILING));
-        user.setLoyaltyPoints(obtainedAmount.intValue() + currentLoyaltyPoints);
+        loyaltyPointsUpdate(user);
 
 
         userRepository.save(user);
         orderService.completeOrder(user);
         cartService.clearCart(user);
         return "order-confirmation";
+    }
+
+    private void loyaltyPointsUpdate(User user) {
+        BigDecimal totalPrice = orderService.getCurrentOrder(user.getId()).getTotalPrice();
+        int currentLoyaltyPoints = user.getLoyaltyPoints();
+        BigDecimal obtainedAmount = totalPrice.divide(BigDecimal.valueOf(10.0)).round(new MathContext(0, RoundingMode.CEILING));
+        user.setLoyaltyPoints(obtainedAmount.intValue() + currentLoyaltyPoints);
     }
 
 }

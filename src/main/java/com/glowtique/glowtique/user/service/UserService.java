@@ -6,6 +6,9 @@ import com.glowtique.glowtique.exception.AlreadyRegEmailException;
 import com.glowtique.glowtique.exception.ExistingPhoneNumber;
 import com.glowtique.glowtique.exception.UnchangeableEmailException;
 import com.glowtique.glowtique.exception.UserNotExisting;
+import com.glowtique.glowtique.notification.service.NotificationService;
+import com.glowtique.glowtique.order.model.Order;
+import com.glowtique.glowtique.order.model.OrderStatus;
 import com.glowtique.glowtique.user.model.Country;
 import com.glowtique.glowtique.user.model.UserRole;
 import com.glowtique.glowtique.user.repository.UserRepository;
@@ -13,7 +16,6 @@ import com.glowtique.glowtique.web.dto.AdminRequest;
 import com.glowtique.glowtique.web.dto.EditProfileRequest;
 import com.glowtique.glowtique.web.dto.LoginRequest;
 import com.glowtique.glowtique.web.dto.RegisterRequest;
-import com.glowtique.glowtique.wishlistitem.model.WishlistItem;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +33,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CartService cartService;
+    private final NotificationService notificationService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, CartService cartService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, CartService cartService, NotificationService notificationService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.cartService = cartService;
+        this.notificationService = notificationService;
     }
 
     public User getUserById(UUID id) {
@@ -93,7 +97,11 @@ public class UserService {
 
         Cart cart = cartService.createCart(user);
         user.setCart(cart);
-        return userRepository.save(user);
+
+        userRepository.save(user);
+
+        notificationService.saveNotificationPreference(user.getId(), user.getEmail());
+        return user;
     }
 
     public List<User> getAllUsers() {
@@ -134,5 +142,12 @@ public class UserService {
         user.setRole(adminRequest.getRole());
 
         userRepository.save(user);
+    }
+
+    public List<Order> getConfirmedOrders(User user) {
+        return user.getOrders().stream()
+                .filter(o -> o.getOrderStatus() != OrderStatus.PENDING)
+                .sorted(Comparator.comparing(Order::getOrderDate))
+                .toList();
     }
 }

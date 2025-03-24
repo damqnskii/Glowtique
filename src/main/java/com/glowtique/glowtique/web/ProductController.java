@@ -1,5 +1,8 @@
 package com.glowtique.glowtique.web;
 
+import com.glowtique.glowtique.brand.model.Brand;
+import com.glowtique.glowtique.brand.repository.BrandRepository;
+import com.glowtique.glowtique.brand.service.BrandService;
 import com.glowtique.glowtique.category.model.Category;
 import com.glowtique.glowtique.category.model.CategoryType;
 import com.glowtique.glowtique.product.model.Product;
@@ -31,22 +34,23 @@ public class ProductController {
     private final ProductService productService;
     private final UserService userService;
     private final WishlistItemService wishlistItemService;
-
+    private final BrandService brandService;
 
     @Autowired
-    public ProductController(ProductService productService, UserService userService, WishlistItemService wishlistItemService) {
+    public ProductController(ProductService productService, UserService userService, WishlistItemService wishlistItemService, BrandRepository brandRepository, BrandService brandService) {
         this.productService = productService;
         this.userService = userService;
         this.wishlistItemService = wishlistItemService;
+        this.brandService = brandService;
     }
 
     @GetMapping("/products")
     public ModelAndView getProductPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata, Model model,
                                        @RequestParam(value = "category", required = false) CategoryType category) {
-        User user = userService.getUserById(authenticationMetadata.getUserId());
-        if (user == null) {
+        if (authenticationMetadata == null) {
             return new ModelAndView("redirect:/login");
         }
+        User user = userService.getUserById(authenticationMetadata.getUserId());
 
         ModelAndView modelAndView = new ModelAndView();
         List<Product> products = (category != null) ? productService.findByCategory(category) : productService.findAll();
@@ -66,11 +70,11 @@ public class ProductController {
     @GetMapping("/product/{id}")
     public ModelAndView getProductDetails(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata,
                                           @PathVariable UUID id) {
-        User user = userService.getUserById(authenticationMetadata.getUserId());
-
-        if (user == null) {
+        if (authenticationMetadata == null) {
             return new ModelAndView("redirect:/login");
         }
+
+        User user = userService.getUserById(authenticationMetadata.getUserId());
 
         Product product = productService.getProductById(id);
         List<Product> productsWithSameName = productService.getProductsByName(product.getName());
@@ -85,6 +89,27 @@ public class ProductController {
         modelAndView.addObject("relatedProducts", productsWithSameName);
         modelAndView.addObject("user", user);
         modelAndView.addObject("wishListed", wishListIds);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/product-brand/{brandId}")
+    public ModelAndView getBrandProducts(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata,
+                                            @PathVariable UUID brandId) {
+        if (authenticationMetadata == null) {
+            return new ModelAndView("redirect:/login");
+        }
+        List<Product> products = productService.getAllProductsByBrandId(brandId);
+        List<WishlistItem> wishlistItems = wishlistItemService.wishListedItems(userService.getUserById(authenticationMetadata.getUserId()));
+        List<UUID> wishListedIds = wishlistItems.stream().map(w -> w.getProduct().getId()).toList();
+        Brand brand = brandService.getBrandById(brandId);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("product-brand");
+        modelAndView.addObject("products", products);
+        modelAndView.addObject("wishListed", wishListedIds);
+        modelAndView.addObject("wishlistItems", wishlistItems);
+        modelAndView.addObject("brand", brand);
 
         return modelAndView;
     }

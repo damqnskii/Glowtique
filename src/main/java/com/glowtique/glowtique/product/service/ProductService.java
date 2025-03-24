@@ -45,4 +45,8 @@ public class ProductService {
     public List<ProductWishlistMapper> createWishlistWrapper(Set<WishlistItem> wishlistItems) {
         return wishlistItems.stream().map(item -> new ProductWishlistMapper(item.getProduct(), item)).toList();
     }
+
+    public List<Product> getAllProductsByBrandId(UUID brandId) {
+        return productRepository.findAllByBrandId(brandId);
+    }
 }

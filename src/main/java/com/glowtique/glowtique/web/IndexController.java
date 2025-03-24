@@ -25,7 +25,7 @@ public class IndexController {
         this.userService = userService;
     }
 
-    @GetMapping("/index")
+    @GetMapping("/")
     public String getIndexPage() {
 
         return "index";

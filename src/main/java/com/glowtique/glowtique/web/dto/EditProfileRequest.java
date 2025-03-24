@@ -22,7 +22,7 @@ public class EditProfileRequest {
     @NotBlank(message = "Въведете имейл адрес!")
     private String email;
 
-    @Pattern(regexp = "^\\+?[0-9]*$", message = "Телефонният номер трябва да съдържа само цифри")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Въведете валиден телефонен номер")
     private String phoneNumber;
 
     private Country country;

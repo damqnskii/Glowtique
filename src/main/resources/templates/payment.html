@@ -20,15 +20,17 @@
         <div class="checkout-content">
             <div class="payment-options">
                 <h2>Метод на плащане</h2>
-                <form  th:action="@{/payment/create}" th:method="Post">
+                <form th:action="@{/payment/create}" th:method="Post">
                     <div class="payment-method">
-                        <input type="radio" id="giftcard" name="payment" value="GIFT_CARD" onclick="toggleForms('giftcard-form')">
+                        <input type="radio" id="giftcard" name="payment" value="GIFT_CARD"
+                               onclick="toggleForms('giftcard-form')">
                         <label for="giftcard">Плати с Gift Card</label>
                     </div>
 
 
                     <div class="payment-method">
-                        <input type="radio" id="easyPay" name="payment" value="EASY_PAY" onclick="toggleForms('easyPay-form')">
+                        <input type="radio" id="easyPay" name="payment" value="EASY_PAY"
+                               onclick="toggleForms('easyPay-form')">
                         <label for="easyPay">Easy Pay</label>
                     </div>
 
@@ -40,14 +42,16 @@
 
 
                     <div class="payment-method">
-                        <input type="radio" id="creditCard" name="payment" value="BANK_TRANSFER" checked onclick="toggleForms('creditCard-form')">
+                        <input type="radio" id="creditCard" name="payment" value="BANK_TRANSFER" checked
+                               onclick="toggleForms('creditCard-form')">
                         <label for="creditCard">С кредитна карта</label>
                     </div>
 
 
                     <div class="newsletter">
                         <input type="checkbox" id="newsletter" name="newsletter">
-                        <label for="newsletter">Желая да се регистрирам за бюлетин и съм съгласен предоставените от мен данни да се обработва съобразно.
+                        <label for="newsletter">Желая да се регистрирам за бюлетин и съм съгласен предоставените от мен
+                            данни да се обработва съобразно.
                             Политиката за поверителност за всички посочени в нея цели.</label>
                     </div>
 
@@ -74,7 +78,8 @@
                             <h3>Плащане с кредитна/дебитна карта</h3>
                             <label for="card-number">Card Number:</label>
                             <input type="text" id="card-number" placeholder="XXXX XXXX XXXX XXXX" maxlength="19"
-                                   pattern="\d{4} \d{4} \d{4} \d{4}" inputmode="numeric" oninput="formatCardNumber(this)">
+                                   pattern="\d{4} \d{4} \d{4} \d{4}" inputmode="numeric"
+                                   oninput="formatCardNumber(this)">
                             <label for="expiry-date">Expiry Date:</label>
                             <input type="text" id="expiry-date" placeholder="MM/YY" maxlength="5"
                                    inputmode="numeric" oninput="formatExpiryDate(this)">
@@ -106,7 +111,7 @@
                                 input.value = value;
                             }
 
-                            document.querySelector("form").addEventListener("submit", function(event) {
+                            document.querySelector("form").addEventListener("submit", function (event) {
                                 const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
 
                                 if (paymentMethod === "Credit/Debit Card") {
@@ -137,9 +142,12 @@
                             });
                         </script>
                     </div>
-                        <input type="hidden" id="paymentMethod" name="paymentMethod" value="">
+                    <input type="hidden" id="paymentMethod" name="paymentMethod" value="">
                     <button type="submit" class="complete-order-btn">Завърши поръчката</button>
                 </form>
+                    <form th:action="@{/checkout}" th:method="Get">
+                        <button type="submit" class="return-btn">Върни се назад</button>
+                    </form>
             </div>
             <form th:action="@{/payment}" th:method="Get" th:object="${user}">
             <div class="order-summary">
