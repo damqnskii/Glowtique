@@ -10,7 +10,6 @@ import com.glowtique.glowtique.product.service.ProductService;
 import com.glowtique.glowtique.security.AuthenticationMetadata;
 import com.glowtique.glowtique.user.model.User;
 import com.glowtique.glowtique.user.service.UserService;
-import com.glowtique.glowtique.web.mapper.ProductWishlistMapper;
 import com.glowtique.glowtique.wishlistitem.model.WishlistItem;
 import com.glowtique.glowtique.wishlistitem.service.WishlistItemService;
 import org.springframework.beans.factory.annotation.Autowired;

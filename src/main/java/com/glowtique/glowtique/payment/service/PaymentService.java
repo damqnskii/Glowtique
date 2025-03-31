@@ -46,7 +46,7 @@ public class PaymentService {
     }
 
     private String cashProcessPayment(User user) {
-        orderService.getCurrentOrder(user.getId()).setPayment(Payment.builder()
+         orderService.getCurrentOrder(user.getId()).setPayment(Payment.builder()
                         .order(orderService.getCurrentOrder(user.getId()))
                         .status(PaymentStatus.COMPLETED)
                         .transactionId(UUID.randomUUID().toString())

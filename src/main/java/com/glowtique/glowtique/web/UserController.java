@@ -1,21 +1,17 @@
 package com.glowtique.glowtique.web;
 
 import com.glowtique.glowtique.security.AuthenticationMetadata;
-import com.glowtique.glowtique.user.model.CustomUserDetailsService;
 import com.glowtique.glowtique.user.service.UserService;
 import com.glowtique.glowtique.web.dto.AdminRequest;
 import com.glowtique.glowtique.web.dto.EditProfileRequest;
 import com.glowtique.glowtique.web.dto.ProductRequest;
 import com.glowtique.glowtique.web.mapper.DtoMapper;
-import com.glowtique.glowtique.wishlistitem.model.WishlistItem;
 import com.glowtique.glowtique.wishlistitem.service.WishlistItemService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,7 +19,6 @@ import com.glowtique.glowtique.user.model.User;
 
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -108,7 +103,7 @@ public class UserController {
         }
         User user = userService.getUserById(authenticationMetadata.getUserId());
 
-        List<ProductRequest> wishlistItems = wishlistItemService.getWishlistItems(user);
+        List<ProductRequest> wishlistItems = wishlistItemService.getWishListItemsAsProductRequest(user);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("wishlist");

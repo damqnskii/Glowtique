@@ -1,12 +1,8 @@
 package com.glowtique.glowtique.web;
 
-import com.glowtique.glowtique.exception.UnauthorizedException;
-import com.glowtique.glowtique.product.model.Product;
 import com.glowtique.glowtique.security.AuthenticationMetadata;
-import com.glowtique.glowtique.user.repository.UserRepository;
 import com.glowtique.glowtique.user.service.UserService;
 import com.glowtique.glowtique.web.dto.ProductRequest;
-import com.glowtique.glowtique.wishlistitem.model.WishlistItem;
 import com.glowtique.glowtique.wishlistitem.service.WishlistItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,13 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.glowtique.glowtique.user.model.User;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 public class WishlistController {
@@ -38,7 +32,7 @@ public class WishlistController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         User user = userService.getUserById(authenticationMetadata.getUserId());
-        List<ProductRequest> wishlistItems = wishlistItemService.getWishlistItems(user);
+        List<ProductRequest> wishlistItems = wishlistItemService.getWishListItemsAsProductRequest(user);
         return ResponseEntity.ok(wishlistItems);
     }
 

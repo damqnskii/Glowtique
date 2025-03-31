@@ -45,7 +45,6 @@ public class UserService {
 
     public User getUserById(UUID id) {
         return userRepository.findById(id).orElseThrow(() -> new UserNotExisting("User not found"));
-
     }
 
 

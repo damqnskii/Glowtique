@@ -2,19 +2,14 @@ package com.glowtique.glowtique.web;
 
 import com.glowtique.glowtique.cart.model.Cart;
 import com.glowtique.glowtique.cart.service.CartService;
-import com.glowtique.glowtique.exception.UnauthorizedException;
 import com.glowtique.glowtique.security.AuthenticationMetadata;
 import com.glowtique.glowtique.user.service.UserService;
-import com.glowtique.glowtique.web.dto.UpdateQuantityRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import com.glowtique.glowtique.user.model.User;
 
 import java.util.HashMap;
 import java.util.Map;

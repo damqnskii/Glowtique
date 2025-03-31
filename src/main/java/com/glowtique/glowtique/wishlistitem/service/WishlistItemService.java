@@ -53,7 +53,7 @@ public class WishlistItemService {
         return true;
     }
 
-    public List<ProductRequest> getWishlistItems(User user) {
+    public List<ProductRequest> getWishListItemsAsProductRequest(User user) {
         List<WishlistItem> wishlistItems = wishlistRepository.findByUser(user);
 
         return wishlistItems.stream().map(w -> ProductRequest.builder()
@@ -80,7 +80,6 @@ public class WishlistItemService {
     }
 
     public List<WishlistItem> wishListedItems (User user) {
-        List<WishlistItem> wishlistItems = wishlistRepository.findByUser(user);
         return wishlistRepository.findByUser(user);
     }
 

@@ -69,7 +69,7 @@ public class CartService {
 
         return cartRepository.save(cart);
     }
-    private CartItem getCartItem(Cart cart, Product product) {
+    public CartItem getCartItem(Cart cart, Product product) {
         return cart.getCartItems()
                 .stream()
                 .filter(i -> i.getProduct().getId()
@@ -110,7 +110,7 @@ public class CartService {
         Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new CartNotExisting("Cart not found"));
         CartItem cartItem = cart.getCartItems().stream()
                 .filter(i -> i.getProduct().getId().equals(productId))
-                .findFirst().orElseThrow(() -> new CartNotExisting("Product not found in the cart"));
+                .findFirst().orElseThrow(() -> new ProductNotfoundException("Product not found in the cart"));
         if (quantity > 0) {
             cartItem.setQuantity(quantity);
         } else {
