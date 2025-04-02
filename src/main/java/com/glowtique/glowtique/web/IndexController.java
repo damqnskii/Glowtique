@@ -1,7 +1,6 @@
 package com.glowtique.glowtique.web;
 
 import com.glowtique.glowtique.security.AuthenticationMetadata;
-import com.glowtique.glowtique.user.model.User;
 import com.glowtique.glowtique.user.service.UserService;
 import com.glowtique.glowtique.web.dto.LoginRequest;
 import com.glowtique.glowtique.web.dto.RegisterRequest;
@@ -9,7 +8,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

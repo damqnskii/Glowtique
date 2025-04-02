@@ -50,6 +50,8 @@ public class WishlistItemService {
                 .isLiked(true)
                 .build();
         wishlistRepository.save(wishlistItem);
+        user.getWishlistItems().add(wishlistItem);
+        userRepository.save(user);
         return true;
     }
 
@@ -74,6 +76,9 @@ public class WishlistItemService {
             throw new ProductNotfoundException("Продуктът не е намерен!");
         }
         Product product = optionalProduct.get();
+        WishlistItem wishlistItem = wishlistRepository.findWishListItemByProduct(product);
+        user.getWishlistItems().remove(wishlistItem);
+        userRepository.save(user);
         wishlistRepository.deleteWishlistItemByUserAndProduct(user, product);
 
         return true;

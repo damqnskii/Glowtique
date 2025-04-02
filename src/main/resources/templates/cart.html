@@ -17,7 +17,7 @@
                 <p><span class="highlight">Безплатна доставка при над 200 лв. поръчка</span></p>
             </div>
 
-            <div th:if="${user.cart.getCartItems().size() == 0}">
+            <div th:if="${user.cart != null and user.cart.getCartItems().size() == 0}">
                 <div class="empty-cart">Нямате добавени продукти в кошницата </div>
             </div>
             <div th:each="item : ${cart.cartItems}" class="cart-item" th:attr="data-product-id=${item.product.id}">

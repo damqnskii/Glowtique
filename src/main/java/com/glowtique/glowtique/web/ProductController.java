@@ -36,7 +36,7 @@ public class ProductController {
     private final BrandService brandService;
 
     @Autowired
-    public ProductController(ProductService productService, UserService userService, WishlistItemService wishlistItemService, BrandRepository brandRepository, BrandService brandService) {
+    public ProductController(ProductService productService, UserService userService, WishlistItemService wishlistItemService, BrandService brandService) {
         this.productService = productService;
         this.userService = userService;
         this.wishlistItemService = wishlistItemService;

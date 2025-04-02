@@ -1,10 +1,14 @@
 package com.glowtique.glowtique.notification.client.dto;
 
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class Notification {
     private String subject;
 

@@ -51,6 +51,7 @@ public class CartController {
         cartService.addItemToCart(userId, productId, quantity);
         return new ModelAndView("redirect:/cart");
     }
+
     @PostMapping("/cart/remove/{productId}")
     public ModelAndView removeItemFromCart(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata,
                                         @PathVariable UUID productId) {

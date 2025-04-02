@@ -18,19 +18,15 @@ import java.util.UUID;
 @Controller
 public class BrandController {
     private final BrandService brandService;
-    private final UserService userService;
 
     @Autowired
-    public BrandController(BrandService brandService, UserService userService) {
+    public BrandController(BrandService brandService) {
         this.brandService = brandService;
-        this.userService = userService;
     }
 
     @GetMapping("/brands")
-    public ModelAndView getBrandsPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-        if (authenticationMetadata == null) {
-            return new ModelAndView("redirect:/login");
-        }
+    public ModelAndView getBrandsPage() {
+
         List<Brand> brands = brandService.getAllBrands();
 
         ModelAndView modelAndView = new ModelAndView("brands");
@@ -39,11 +35,8 @@ public class BrandController {
     }
 
     @GetMapping("/brand/{id}")
-    public ModelAndView getBrandDetails(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata,
-                                        @PathVariable UUID id) {
-        if (authenticationMetadata == null) {
-            return new ModelAndView("redirect:/login");
-        }
+    public ModelAndView getBrandDetails(@PathVariable UUID id) {
+
         Brand currentBrand = brandService.getBrandById(id);
 
         ModelAndView modelAndView = new ModelAndView("brand-details");

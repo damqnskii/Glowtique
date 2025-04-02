@@ -35,16 +35,12 @@ public class NotificationController {
         NotificationPreference notificationPreference = notificationService.getNotificationPreference(authenticationMetadata.getUserId());
         List<Notification> notificationHistory = notificationService.getNotificationHistory(authenticationMetadata.getUserId());
 
-        long succeededNotificationsNumber = notificationHistory.stream().filter(notification -> notification.getStatus().equals("SUCCEEDED")).count();
-        long failedNotificationsNumber = notificationHistory.stream().filter(notification -> notification.getStatus().equals("FAILED")).count();
 
         notificationHistory = notificationHistory.stream().limit(5).toList();
 
         ModelAndView modelAndView = new ModelAndView("notifications");
         modelAndView.addObject("user", user);
         modelAndView.addObject("notificationPreference", notificationPreference);
-        modelAndView.addObject("succeededNotificationsNumber", succeededNotificationsNumber);
-        modelAndView.addObject("failedNotificationsNumber", failedNotificationsNumber);
         modelAndView.addObject("notificationHistory", notificationHistory);
 
         return modelAndView;

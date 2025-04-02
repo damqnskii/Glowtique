@@ -7,15 +7,15 @@
 }
 body {
     margin: 0;
-    background-color: #f9f9f9; /* Softer white */
-    color: #444; /* Darker gray for better readability */
+    background-color: #f9f9f9;
+    color: #444;
 }
 
 .top-bar {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f0f0f0; /* Lighter gray */
+    background-color: #8B5E3C;
     padding: 10px;
 }
 

@@ -105,11 +105,9 @@ public class UserController {
 
         List<ProductRequest> wishlistItems = wishlistItemService.getWishListItemsAsProductRequest(user);
 
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("wishlist");
-        modelAndView.addObject("wishlistItems", wishlistItems);
-        modelAndView.addObject("user", user);
-        return modelAndView;
+        return new ModelAndView("wishlist")
+                .addObject("wishlistItems", wishlistItems)
+                .addObject("user", user);
     }
     @GetMapping("/loyalty-points")
     public ModelAndView getLoyaltyPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {

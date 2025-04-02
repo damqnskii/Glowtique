@@ -59,7 +59,6 @@ public class NotificationService {
     }
 
     public List<Notification> getNotificationHistory(UUID userId) {
-
         ResponseEntity<List<Notification>> httpResponse = notificationClient.getNotificationHistory(userId);
 
         return httpResponse.getBody();
@@ -91,7 +90,6 @@ public class NotificationService {
         } catch (Exception e) {
             log.warn("Can't send email to user with id = [%s] due to 500 Internal Server Error.".formatted(userId));
         }
-
     }
 
     public void retryFailed(UUID userId) {

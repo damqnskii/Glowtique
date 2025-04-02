@@ -31,7 +31,7 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // Custom login page
+                        .loginPage("/login")
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/home", true)
