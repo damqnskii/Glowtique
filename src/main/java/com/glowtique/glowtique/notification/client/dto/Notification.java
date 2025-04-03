@@ -14,6 +14,8 @@ public class Notification {
 
     private LocalDateTime createdOn;
 
+    private String body;
+
     private String status;
 
     private String type;

@@ -35,7 +35,7 @@
 
                 <div class="details-section">
                     <div class="details-section-container">
-                        <p th:text="'Вид на нотификациите: ' + ${notificationPreference.type}"></p>
+                        <p th:text="'Вид на нотификациите: ' + ${#strings.toLowerCase(#strings.toUpperCase(notificationPreference.type))}"></p>
                     </div>
                 </div>
 
@@ -75,11 +75,25 @@
                         </button>
                     </form>
                 </div>
-
-                <p class="alert-warning" th:text="${clearHistoryErrorMessage}"></p>
-                <p class="small-informative-text-bottom">Any action that you take will affect the notification mechanism for your account!</p>
+                <div class="table-responsive">
+                    <table class="notification-table">
+                        <thead>
+                        <tr>
+                            <th>Относно</th>
+                            <th>Продукт</th>
+                            <th>Дата</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="notification : ${notificationHistory}">
+                            <td th:text="${notification.subject}"></td>
+                            <td th:text="${notification.body}"></td>
+                            <td th:text="${#temporals.format(notification.getCreatedOn(), 'yyyy-MM-dd')}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
         </div>
     </div>
 </main>

@@ -55,7 +55,7 @@
           <div class="brand-section">
             <h3 id="B">B</h3>
             <ul th:each="brand : ${brands}">
-              <li  th:if="${brand.name.startsWith('H') || brand.name.startsWith('h')}">
+              <li  th:if="${brand.name.startsWith('B') || brand.name.startsWith('b')}">
                 <a th:href="@{/brand/{id}(id=${brand.id})}" th:text="${brand.name}"></a>
               </li>
             </ul>

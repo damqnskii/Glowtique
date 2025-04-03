@@ -187,3 +187,34 @@
     text-align: center;
     margin-top: auto;
 }
+.table-responsive {
+    overflow-x: auto;
+}
+
+.notification-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+}
+
+.notification-table th {
+    width: 35%;
+
+}
+
+.notification-table th,
+.notification-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.notification-table th {
+    background-color: #8B5E3C;
+    color: white;
+}
+
+.notification-table tbody tr:hover {
+    background-color: #e9ecef;
+}
